@@ -22,3 +22,11 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/index.html
+/.htaccess
+/404.html
+/.user.ini
+/public/.htaccess
+/public/index.html
+/public/404.html
+/public/.user.ini
