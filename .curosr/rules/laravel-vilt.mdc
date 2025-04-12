@@ -1,0 +1,64 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: This rule explains how to build Vue components with Inertia.js in Laravel applications.
+globs: 
+    **/*.vue
+    app/Controllers/**/*.php
+alwaysApply: false
+---
+
+# Laravel VILT rules
+
+- Inertia.js components should be placed in the `resources/js/pages` directory
+- The background page is placed in `resources/js/pages/admin`
+- The user page is placed in `resources/js/pages/web`
+- Use `Inertia::render()` for server-side routing instead of traditional Blade views
+- Vue components must have a single root element, similar to Livewire components
+- Use `$inertia.visit()` or `<inertia-link>` for navigation instead of traditional links
+- For form handling, use `$inertia.post()`, `$inertia.put()`, etc. instead of traditional form submissions
+- When using Vue 3, prefer the Composition API with `<script setup>` syntax for cleaner components
+- Access shared data via `$page.props` in your Vue components
+- If you need to add custom CSS, put that in (mdc:resources/css/app.css、resources/css/admin.css)
+- Data types are placed in `resources/js/types/index.d.ts`
+
+```php
+// routes/web.php example
+Route::get('/users', function () {
+    return Inertia::render('Users/Index', [
+        'users' => User::all()
+    ]);
+});
+```
+
+```vue
+<!-- Modern Vue 3 component example -->
+<script setup lang="ts">
+import { ref } from "vue";
+import { usePage } from "@inertiajs/vue3";
+import { User } from "@/types";
+
+const props = defineProps<{
+  users: User[];
+}>({
+  users: Array,
+});
+
+const title = ref("Users List");
+</script>
+
+<template>
+  <div class="p-6">
+    <h1 class="text-2xl font-bold">{{ title }}</h1>
+    <div v-if="$page.props.flash.message" class="alert">
+      {{ $page.props.flash.message }}
+    </div>
+    <ul>
+      <li v-for="user in users" :key="user.id">{{ user.name }}</li>
+    </ul>
+  </div>
+</template>
+```
