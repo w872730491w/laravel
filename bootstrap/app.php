@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
-        using: function () {
+        then: function () {
             Route::middleware('web')
                 ->prefix('admin')
                 ->name('admin.')
@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // $middleware->encryptCookies(except: []);
+        $middleware->encryptCookies(except: []);
 
         $middleware->web(append: [
             HandleInertiaRequests::class,

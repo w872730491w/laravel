@@ -30,3 +30,6 @@ yarn-error.log
 /public/index.html
 /public/404.html
 /public/.user.ini
+_ide_helper.php
+.phpstorm.meta.php
+_ide_helper_models.php
