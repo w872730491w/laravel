@@ -112,7 +112,7 @@ Directory explanation
 Key points
 - Follow Laravel’s MVC architecture for clear separation of business logic, data, and presentation layers.
 - Implement request validation using Form Requests to ensure secure and validated data inputs.
-- Use Laravel’s built-in authentication system, including laravel-permission for API token management.
+- Use Laravel’s built-in authentication system, including `spatie/laravel-permission` for API token management.
 - Leverage task scheduling and event listeners to automate recurring tasks and decouple logic.
 - Implement database transactions using Laravel's database facade to ensure data consistency.
 - Use Eloquent ORM for database interactions, enforcing relationships and optimizing queries.
