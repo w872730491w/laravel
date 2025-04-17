@@ -3,6 +3,9 @@ import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import { resolve } from 'node:path';
 import path from 'path';
+import AutoImport from 'unplugin-auto-import/vite';
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
+import Components from 'unplugin-vue-components/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -19,6 +22,20 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
+        }),
+        AutoImport({
+            imports: [
+                'vue',
+                {
+                    'naive-ui': ['useDialog', 'useMessage', 'useNotification', 'useLoadingBar'],
+                },
+            ],
+            dirs: ['./resources/js/utils'],
+            dts: './resources/js/types/auto-imports.d.ts',
+        }),
+        Components({
+            resolvers: [NaiveUiResolver()],
+            dts: './resources/js/types/components.d.ts',
         }),
     ],
     resolve: {
