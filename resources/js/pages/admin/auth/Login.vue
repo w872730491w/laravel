@@ -33,8 +33,8 @@ const { handleSubmit, controlledValues } = useForm({
     initialErrors: {
         username: props.errors.username,
         password: props.errors.password,
-        remember: undefined
-    }
+        remember: undefined,
+    },
 })
 const onSubmit = handleSubmit((values) => {
     router.post(route('admin.login'), values)
@@ -95,7 +95,7 @@ const onSubmit = handleSubmit((values) => {
                 </FormField>
                 <FormItem class="relative space-y-0 pb-6">
                     <div class="flex items-center justify-between">
-                        <Label for="remember" class="flex items-center cursor-pointer">
+                        <Label for="remember" class="flex cursor-pointer items-center">
                             <Checkbox id="remember" v-model="controlledValues.remember" />
                             <span>记住我</span>
                         </Label>

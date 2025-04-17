@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Icon from '@/components/Icon/index.vue'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,7 +10,6 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import type { DropdownMenuContentProps } from 'reka-ui'
-import Icon from '@/components/Icon/index.vue'
 
 defineOptions({
     name: 'Dropdown',

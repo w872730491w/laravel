@@ -1,4 +1,4 @@
-import type { Page, PageProps } from '@inertiajs/core'
+import type { Page } from '@inertiajs/core'
 import type { route as routeFn } from 'ziggy-js'
 import type { SharedData } from './index'
 

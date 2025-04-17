@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { cn } from '@/lib/utils';
-import { Icon } from '@iconify/vue';
-import type { HTMLAttributes } from 'vue';
+import { cn } from '@/lib/utils'
+import { Icon } from '@iconify/vue'
+import type { HTMLAttributes } from 'vue'
 
 defineOptions({
     name: 'Icon',
-});
+})
 
 const props = defineProps<{
-    name: string;
-    class?: HTMLAttributes['class'];
-}>();
+    name: string
+    class?: HTMLAttributes['class']
+}>()
 </script>
 
 <template>

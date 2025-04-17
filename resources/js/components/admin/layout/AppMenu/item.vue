@@ -98,7 +98,7 @@ defineExpose({
                 v-if="subMenu && (!isCollapse || level !== 0)"
                 :class="
                     cn(
-                        'after:transition-transform after:duration-200 before:transition-transform before:duration-200 after:content-[\'\'] before:content-[\'\'] relative ms-1 w-[10px] before:absolute before:h-[1.5px] before:w-[6px] before:-translate-y-[1px] before:bg-current after:absolute after:h-[1.5px] after:w-[6px] after:-translate-y-[1px] after:bg-current',
+                        'relative ms-1 w-[10px] before:absolute before:h-[1.5px] before:w-[6px] before:-translate-y-[1px] before:bg-current before:transition-transform before:duration-200 before:content-[\'\'] after:absolute after:h-[1.5px] after:w-[6px] after:-translate-y-[1px] after:bg-current after:transition-transform after:duration-200 after:content-[\'\']',
                         {
                             [expand
                                 ? 'before:-translate-x-[2px] before:-rotate-45 after:translate-x-[2px] after:rotate-45'

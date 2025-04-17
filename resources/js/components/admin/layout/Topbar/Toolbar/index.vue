@@ -51,7 +51,7 @@ defineOptions({
                             {
                                 label: '退出登录',
                                 icon: 'mdi:logout',
-                                handle: () => router.post(route('admin.logout'))
+                                handle: () => router.post(route('admin.logout')),
                             },
                         ],
                     ]"
