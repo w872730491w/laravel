@@ -42,7 +42,9 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-    <div class="bg-secondary relative flex h-svh w-full flex-col items-center justify-center overflow-hidden rounded-lg border md:shadow-xl">
+    <div
+        class="bg-secondary relative flex h-svh w-full flex-col items-center justify-center overflow-hidden rounded-lg border md:shadow-xl"
+    >
         <Motion
             as="div"
             :initial="{ opacity: 0, y: 40, filter: 'blur(10px)' }"
@@ -81,7 +83,12 @@ const onSubmit = handleSubmit((values) => {
                     <FormItem class="relative space-y-0 pb-6">
                         <FormLabel> 密码 </FormLabel>
                         <FormControl>
-                            <Input v-bind="componentField" type="password" autocomplete="current-password" placeholder="请输入密码" />
+                            <Input
+                                v-bind="componentField"
+                                type="password"
+                                autocomplete="current-password"
+                                placeholder="请输入密码"
+                            />
                         </FormControl>
                         <Transition
                             enter-active-class="transition-opacity"

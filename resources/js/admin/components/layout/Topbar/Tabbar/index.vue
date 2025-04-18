@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ScrollArea from '@admin/components/layout/ScrollArea/index.vue'
 import Icon from '@admin/components/Icon/index.vue'
+import ScrollArea from '@admin/components/layout/ScrollArea/index.vue'
 import { usePage } from '@inertiajs/vue3'
 import Sortable from 'sortablejs'
 
@@ -61,7 +61,8 @@ watch(
         }
         const index = list.value.findIndex((item) => item.tabId === activedTabId.value)
         if (index !== -1) {
-            tabRef.value && tabsRef.value?.scrollTo({ left: tabRef.value[index].offsetLeft - tabsRef.value.ref?.$el.clientWidth * 0.4 })
+            tabRef.value &&
+                tabsRef.value?.scrollTo({ left: tabRef.value[index].offsetLeft - tabsRef.value.ref?.$el.clientWidth * 0.4 })
         }
     },
     {
@@ -106,7 +107,13 @@ onMounted(() => {
                     class="relative inline-block"
                     :class="{ dragging: isDragging }"
                 >
-                    <div v-for="item in list" :key="item.tabId" ref="tabRef" class="tab group" :class="{ active: activedTabId === item.tabId }">
+                    <div
+                        v-for="item in list"
+                        :key="item.tabId"
+                        ref="tabRef"
+                        class="tab group"
+                        :class="{ active: activedTabId === item.tabId }"
+                    >
                         <div class="pointer-events-auto size-full select-none">
                             <div class="tab-divider"></div>
                             <div class="tab-background"></div>
@@ -198,7 +205,8 @@ onMounted(() => {
             line-height: 1rem;
             color: hsl(var(--accent-foreground) / 50%);
             transition-property:
-                color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+                color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform,
+                filter, backdrop-filter;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 0.15s;
         }

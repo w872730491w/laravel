@@ -101,7 +101,8 @@ defineExpose({
                         props.horizontal,
                     'after:bottom-0 after:h-12 after:w-full after:bg-gradient-to-b after:to-[var(--mask-scroll-container-gradient-color)]':
                         !props.horizontal,
-                    'before:h-12 before:w-full before:bg-gradient-to-t before:to-[var(--mask-scroll-container-gradient-color)]': !props.horizontal,
+                    'before:h-12 before:w-full before:bg-gradient-to-t before:to-[var(--mask-scroll-container-gradient-color)]':
+                        !props.horizontal,
                     'before:opacity-100!': props.mask && showMaskStart,
                     'after:opacity-100!': props.mask && showMaskEnd,
                 },
@@ -109,9 +110,18 @@ defineExpose({
             )
         "
     >
-        <ScrollArea ref="scrollAreaRef" :class="cn('relative z-0 flex-1', props.contentClass)" :scrollbar="props.scrollbar" :on-wheel="onWheel">
+        <ScrollArea
+            ref="scrollAreaRef"
+            :class="cn('relative z-0 flex-1', props.contentClass)"
+            :scrollbar="props.scrollbar"
+            :on-wheel="onWheel"
+        >
             <slot />
-            <ScrollBar v-if="props.horizontal" orientation="horizontal" :class="{ 'pointer-events-none opacity-0': !props.scrollbar }" />
+            <ScrollBar
+                v-if="props.horizontal"
+                orientation="horizontal"
+                :class="{ 'pointer-events-none opacity-0': !props.scrollbar }"
+            />
         </ScrollArea>
     </div>
 </template>

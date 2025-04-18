@@ -19,17 +19,18 @@ const props = withDefaults(
 const index = props.menus.path ?? props.menus.id
 const itemRef = useTemplateRef('itemRef')
 const subMenuRef = useTemplateRef('subMenuRef')
-const { isCollapse, openedMenus, mouseInMenu, subMenus, items, handleSubMenuClick, handleMenuItemClick, openMenu, closeMenu } = inject<{
-    isCollapse: Ref<boolean>
-    openedMenus: Ref<string[]>
-    mouseInMenu: Ref<string[]>
-    subMenus: Record<string, any>
-    items: Record<string, any>
-    handleSubMenuClick: (index: string) => void
-    handleMenuItemClick: (index: string) => void
-    openMenu: (index: string) => void
-    closeMenu: (index: string | string[]) => void
-}>('app-sidebar')!
+const { isCollapse, openedMenus, mouseInMenu, subMenus, items, handleSubMenuClick, handleMenuItemClick, openMenu, closeMenu } =
+    inject<{
+        isCollapse: Ref<boolean>
+        openedMenus: Ref<string[]>
+        mouseInMenu: Ref<string[]>
+        subMenus: Record<string, any>
+        items: Record<string, any>
+        handleSubMenuClick: (index: string) => void
+        handleMenuItemClick: (index: string) => void
+        openMenu: (index: string) => void
+        closeMenu: (index: string | string[]) => void
+    }>('app-sidebar')!
 
 const opened = computed(() => {
     return openedMenus.value.includes(props.uniqueKey.at(-1)!)
@@ -121,11 +122,17 @@ const transitionClass = computed(() => {
           }
         : {
               enterActiveClass: 'ease-in-out duration-300',
-              enterFromClass: cn('translate-y-4 scale-95 opacity-0 blur-[4px]', CSS.supports('height', 'calc-size(auto, size)') && 'h-0'),
+              enterFromClass: cn(
+                  'translate-y-4 scale-95 opacity-0 blur-[4px]',
+                  CSS.supports('height', 'calc-size(auto, size)') && 'h-0',
+              ),
               enterToClass: 'opacity-100 translate-y-0 scale-100 blur-[0px]',
               leaveActiveClass: 'ease-in-out duration-300',
               leaveFromClass: 'opacity-100 translate-y-0 scale-100 blur-[0px]',
-              leaveToClass: cn('translate-y-4 scale-95 opacity-0 blur-[4px]', CSS.supports('height', 'calc-size(auto, size)') && 'h-0'),
+              leaveToClass: cn(
+                  'translate-y-4 scale-95 opacity-0 blur-[4px]',
+                  CSS.supports('height', 'calc-size(auto, size)') && 'h-0',
+              ),
           }
 })
 

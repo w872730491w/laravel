@@ -5,18 +5,18 @@ import { type HTMLAttributes, toValue } from 'vue'
 import { useFormField } from './useFormField'
 
 const props = defineProps<{
-  class?: HTMLAttributes['class']
+    class?: HTMLAttributes['class']
 }>()
 
 const { name, formMessageId } = useFormField()
 </script>
 
 <template>
-  <ErrorMessage
-    :id="formMessageId"
-    data-slot="form-message"
-    as="p"
-    :name="toValue(name)"
-    :class="cn('text-destructive-foreground text-sm', props.class)"
-  />
+    <ErrorMessage
+        :id="formMessageId"
+        data-slot="form-message"
+        as="p"
+        :name="toValue(name)"
+        :class="cn('text-destructive-foreground text-sm', props.class)"
+    />
 </template>

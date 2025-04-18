@@ -159,7 +159,8 @@ watch(
         if (!items.value[currentValue]) {
             activeIndex.value = ''
         }
-        const item = items.value[currentValue] || (activeIndex.value && items.value[activeIndex.value]) || items.value[currentValue]
+        const item =
+            items.value[currentValue] || (activeIndex.value && items.value[activeIndex.value]) || items.value[currentValue]
         if (item) {
             activeIndex.value = item.index
         } else {

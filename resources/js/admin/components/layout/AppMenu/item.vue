@@ -57,12 +57,15 @@ defineExpose({
                       }
             "
             :class="
-                cn('group menu-item-container relative flex h-full w-full items-center justify-between gap-1 rounded-lg px-4 py-3', {
-                    'hover:bg-muted hover:text-accent-foreground text-accent-foreground cursor-pointer transition-all': true,
-                    'bg-primary! text-primary-foreground!': isItemActive,
-                    'px-3': isCollapse && level === 0,
-                    'py-3': isCollapse && level !== 0,
-                })
+                cn(
+                    'group menu-item-container relative flex h-full w-full items-center justify-between gap-1 rounded-lg px-4 py-3',
+                    {
+                        'hover:bg-muted hover:text-accent-foreground text-accent-foreground cursor-pointer transition-all': true,
+                        'bg-primary! text-primary-foreground!': isItemActive,
+                        'px-3': isCollapse && level === 0,
+                        'py-3': isCollapse && level !== 0,
+                    },
+                )
             "
         >
             <div

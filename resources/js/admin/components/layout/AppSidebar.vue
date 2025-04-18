@@ -36,7 +36,9 @@ const toogleCollapse = () => {
                             >
                                 <div class="inline-flex w-full flex-1 flex-col items-center justify-center gap-1">
                                     <Icon name="uim:box" class="text-xl transition-transform group-hover:scale-120" />
-                                    <span class="transition-height transition-width w-full flex-1 truncate text-center text-sm transition-opacity">
+                                    <span
+                                        class="transition-height transition-width w-full flex-1 truncate text-center text-sm transition-opacity"
+                                    >
                                         演示
                                     </span>
                                 </div>
@@ -48,7 +50,9 @@ const toogleCollapse = () => {
                             >
                                 <div class="inline-flex w-full flex-1 flex-col items-center justify-center gap-1">
                                     <Icon name="uim:box" class="text-xl transition-transform group-hover:scale-120" />
-                                    <span class="transition-height transition-width w-full flex-1 truncate text-center text-sm transition-opacity">
+                                    <span
+                                        class="transition-height transition-width w-full flex-1 truncate text-center text-sm transition-opacity"
+                                    >
                                         演示
                                     </span>
                                 </div>
@@ -61,10 +65,13 @@ const toogleCollapse = () => {
         <Transition name="sub-sidebar">
             <div
                 :class="
-                    cn('bg-background flex h-full flex-col shadow-[-1px_0_0_var(--border),1px_0_0_var(--border)] transition-[width] duration-300', {
-                        'w-(--sidebar-collapse-width)': isCollapse,
-                        'w-(--sidebar-menu-width)': !isCollapse,
-                    })
+                    cn(
+                        'bg-background flex h-full flex-col shadow-[-1px_0_0_var(--border),1px_0_0_var(--border)] transition-[width] duration-300',
+                        {
+                            'w-(--sidebar-collapse-width)': isCollapse,
+                            'w-(--sidebar-menu-width)': !isCollapse,
+                        },
+                    )
                 "
             >
                 <Link

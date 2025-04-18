@@ -29,7 +29,11 @@ defineExpose({
 
 <template>
     <ScrollAreaRoot v-bind="delegatedProps" :class="cn('relative overflow-hidden', props.class)">
-        <ScrollAreaViewport ref="viewportRef" class="scroll-area-viewport h-full w-full rounded-[inherit]" @wheel.prevent="onWheel">
+        <ScrollAreaViewport
+            ref="viewportRef"
+            class="scroll-area-viewport h-full w-full rounded-[inherit]"
+            @wheel.prevent="onWheel"
+        >
             <slot />
         </ScrollAreaViewport>
         <ScrollBar :class="{ 'pointer-events-none opacity-0': !props.scrollbar }" />
