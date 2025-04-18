@@ -7,7 +7,7 @@
     {{-- Inline style to set the HTML background color based on our theme in app.css --}}
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
     @routes
-    @vite(['resources/js/admin.ts'])
+    @vite(['resources/js/admin/main.ts'])
     @inertiaHead
 </head>
 

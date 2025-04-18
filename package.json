@@ -2,15 +2,16 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
-        "build:ssr": "vite build && vite build --ssr",
-        "dev": "vite",
+        "build:admin": "vite build -c vite.config.admin.ts",
+        "build:admin:ssr": "vite build -c vite.config.admin.ts && vite build --ssr -c vite.config.admin.ts",
+        "dev:admin": "vite -c vite.config.admin.ts",
         "format": "prettier --write resources/",
         "format:check": "prettier --check resources/"
     },
     "devDependencies": {
         "@iconify/vue": "^4.3.0",
         "@inspira-ui/plugins": "^0.0.1",
+        "@tsconfig/node22": "^22.0.1",
         "@types/node": "^22.13.5",
         "@types/path-browserify": "^1.0.3",
         "@types/sortablejs": "^1.15.8",

@@ -46,10 +46,7 @@ return [
         'ensure_pages_exist' => true,
 
         'page_paths' => [
-
-            resource_path('js/pages/web'),
-            resource_path('js/pages/admin'),
-
+            resource_path('js/admin/pages'),
         ],
 
         'page_extensions' => [
@@ -66,9 +63,7 @@ return [
     ],
 
     'history' => [
-
         'encrypt' => (bool) env('INERTIA_ENCRYPT_HISTORY', false),
-
     ],
 
 ];

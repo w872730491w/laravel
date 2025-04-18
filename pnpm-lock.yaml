@@ -72,6 +72,9 @@ importers:
       '@inspira-ui/plugins':
         specifier: ^0.0.1
         version: 0.0.1
+      '@tsconfig/node22':
+        specifier: ^22.0.1
+        version: 22.0.1
       '@types/node':
         specifier: ^22.13.5
         version: 22.14.1
@@ -565,6 +568,9 @@ packages:
     resolution: {integrity: sha512-GYdZ3SJBQPzgxhuCE2fvpiH46qzHiVx5XzBSdtESgiqh4poj8UgckjGWYEhxaBbcVt1oLzh1m3Ql4TyH32TOzQ==}
     peerDependencies:
       vue: ^2.7.0 || ^3.0.0
+
+  '@tsconfig/node22@22.0.1':
+    resolution: {integrity: sha512-VkgOa3n6jvs1p+r3DiwBqeEwGAwEvnVCg/hIjiANl5IEcqP3G0u5m8cBJspe1t9qjZRlZ7WFgqq5bJrGdgAKMg==}
 
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
@@ -1887,6 +1893,8 @@ snapshots:
     dependencies:
       '@tanstack/virtual-core': 3.13.6
       vue: 3.5.13(typescript@5.8.3)
+
+  '@tsconfig/node22@22.0.1': {}
 
   '@types/estree@1.0.7': {}
 
