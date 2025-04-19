@@ -17,9 +17,7 @@ class AuthenticatedController extends Controller
      */
     public function create(Request $request): Response
     {
-        return inertia('auth/Login', [
-            'canResetPassword' => Route::has('password.request'),
-        ]);
+        return inertia('auth/Login');
     }
 
     /**

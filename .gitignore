@@ -33,5 +33,5 @@ yarn-error.log
 _ide_helper.php
 .phpstorm.meta.php
 _ide_helper_models.php
-resources/js/types/auto-imports.d.ts
-resources/js/types/components.d.ts
+auto-imports.d.ts
+components.d.ts

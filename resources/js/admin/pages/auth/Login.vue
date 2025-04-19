@@ -17,7 +17,7 @@ defineOptions({
 
 const { props } = usePage()
 
-const { handleSubmit, controlledValues } = useForm({
+const { handleSubmit, controlledValues, setErrors } = useForm({
     validationSchema: toTypedSchema(
         z.object({
             username: z.string().min(1, '请输入用户名'),
@@ -30,14 +30,14 @@ const { handleSubmit, controlledValues } = useForm({
         password: '',
         remember: false,
     },
-    initialErrors: {
-        username: props.errors.username,
-        password: props.errors.password,
-        remember: undefined,
-    },
 })
+
 const onSubmit = handleSubmit((values) => {
-    router.post(route('admin.login'), values)
+    router.post(route('admin.login'), values, {
+        onError(errors) {
+            setErrors(errors)
+        },
+    })
 })
 </script>
 
