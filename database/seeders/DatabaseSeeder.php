@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'avatar' => '',
             'nickname' => '管理员',
             'username' => 'admin',
-            'password' => Hash::make('123456a')
+            'password' => Hash::make('123456a'),
         ]);
     }
 }
