@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Icon from '@admin/components/Icon/index.vue'
 import ScrollArea from '@admin/components/layout/ScrollArea/index.vue'
-import { usePage } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 import Sortable from 'sortablejs'
 
 const page = usePage()
@@ -18,7 +18,7 @@ const tabsRef = useTemplateRef('tabsRef')
 const tabRef = useTemplateRef<HTMLElement[]>('tabRef')
 
 watch(
-    () => activedTabId.value,
+    activedTabId,
     (v) => {
         const tabId = v
         // 记录查找到的标签页
@@ -95,29 +95,70 @@ onMounted(() => {
         },
     })
 })
+
+const onClick = (item: any) => {
+    router.visit(item.fullPath)
+}
+
+const remove = (tabId: any) => {
+    list.value = list.value.filter((item) => {
+        return item.tabId !== tabId
+    })
+}
+
+const closeTab = (tabId: any) => {
+    const index = list.value.findIndex((item) => item.tabId === tabId)
+    if (index >= 0) {
+        if (tabId === activedTabId.value) {
+            const index = list.value.findIndex((item) => item.tabId === tabId)
+            router.get(
+                index < list.value.length - 1 ? list.value[index + 1].fullPath : list.value[index - 1].fullPath,
+                undefined,
+                {
+                    onSuccess: () => {
+                        remove(tabId)
+                    },
+                },
+            )
+        } else {
+            remove(tabId)
+        }
+    }
+}
 </script>
 
 <template>
     <div class="tabbar relative flex h-(--tabbar-height) items-center bg-(--main-area-bg) transition-colors">
         <div class="relative h-full flex-1">
-            <ScrollArea ref="tabsRef" horizontal :scrollbar="false" mask
-                class="absolute inset-x-0 bottom-0 whitespace-nowrap">
-                <TransitionGroup ref="tabContainerRef" :name="!isDragging ? 'tabbar' : undefined" tag="div"
-                    class="relative inline-block" :class="{ dragging: isDragging }">
-                    <div v-for="(item, index) in list" :key="item.tabId" ref="tabRef" :data-index="index"
-                        class="tab group" :class="{ active: activedTabId === item.tabId }">
+            <ScrollArea ref="tabsRef" horizontal :scrollbar="false" mask class="absolute inset-x-0 bottom-0 whitespace-nowrap">
+                <TransitionGroup
+                    ref="tabContainerRef"
+                    :name="!isDragging ? 'tabbar' : undefined"
+                    tag="div"
+                    class="relative inline-block"
+                    :class="{ dragging: isDragging }"
+                >
+                    <div
+                        v-for="(item, index) in list"
+                        :key="item.tabId"
+                        ref="tabRef"
+                        :data-index="index"
+                        class="tab group"
+                        :class="{ active: activedTabId === item.tabId }"
+                        @click="onClick(item)"
+                    >
                         <div class="pointer-events-auto size-full select-none">
                             <div class="tab-divider"></div>
                             <div class="tab-background"></div>
                             <div class="pointer-events-[all] flex size-full">
                                 <div class="title">
-                                    <Icon v-if="item.icon" name="uim:box" class="flex-shrink-0" />
+                                    <Icon v-if="item.icon" :name="item.icon" class="flex-shrink-0" />
                                     <span>{{ item.title }}</span>
                                 </div>
-                                <div class="action-icon">
+                                <div v-if="list.length > 1" class="action-icon" @click.stop="closeTab(item.tabId)">
                                     <Icon name="ri:close-fill" />
                                 </div>
-                                <div class="absolute inset-0 z-10"></div>
+                                <div class="drag-handle" />
                             </div>
                         </div>
                     </div>
@@ -154,6 +195,10 @@ onMounted(() => {
 
             .title {
                 color: var(--foreground);
+            }
+
+            .action-icon {
+                color: hsl(var(--accent-foreground) / 50%);
             }
         }
 
@@ -213,6 +258,10 @@ onMounted(() => {
                 filter, backdrop-filter;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 0.15s;
+            &:hover {
+                border: 1px solid var(--border);
+                background-color: var(--secondary);
+            }
         }
 
         position: relative;
@@ -291,7 +340,6 @@ onMounted(() => {
 
 /* 标签栏动画 */
 .tabs {
-
     .tabbar-move,
     .tabbar-enter-active,
     .tabbar-leave-active {
@@ -305,7 +353,6 @@ onMounted(() => {
     }
 
     &.tabs-ontop {
-
         .tabbar-enter-from,
         .tabbar-leave-to {
             opacity: 0;
@@ -316,5 +363,11 @@ onMounted(() => {
     .tabbar-leave-active {
         position: absolute !important;
     }
+}
+
+.drag-handle {
+    position: absolute;
+    inset: 0;
+    z-index: 9;
 }
 </style>

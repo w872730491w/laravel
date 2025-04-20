@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function (Admin $user): ?bool {
             return $user->hasRole('super admin') ? true : null;
         });
+
+        JsonResource::withoutWrapping();
     }
 }

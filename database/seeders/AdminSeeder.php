@@ -35,6 +35,7 @@ class AdminSeeder extends Seeder
 
             $permissions = [
                 [
+                    'id' => 1,
                     'pid' => 0,
                     'type' => PermissionTypes::View->value,
                     'name' => 'system',
@@ -44,6 +45,7 @@ class AdminSeeder extends Seeder
                     'guard_name' => 'admin'
                 ],
                 [
+                    'id' => 2,
                     'pid' => 1,
                     'type' => PermissionTypes::View->value,
                     'name' => 'system.config',
@@ -53,6 +55,7 @@ class AdminSeeder extends Seeder
                     'guard_name' => 'admin'
                 ],
                 [
+                    'id' => 3,
                     'pid' => 2,
                     'type' => PermissionTypes::View->value,
                     'name' => 'system.config.main',
@@ -62,12 +65,33 @@ class AdminSeeder extends Seeder
                     'guard_name' => 'admin'
                 ],
                 [
+                    'id' => 4,
                     'pid' => 2,
                     'type' => PermissionTypes::View->value,
                     'name' => 'system.config.admin',
                     'icon' => 'eos-icons:admin-outlined',
                     'display_name' => '后台配置',
                     'route' => 'admin.system.config.admin',
+                    'guard_name' => 'admin'
+                ],
+                [
+                    'id' => 5,
+                    'pid' => 1,
+                    'type' => PermissionTypes::View->value,
+                    'name' => 'system.permission',
+                    'icon' => 'material-symbols:shield-outline',
+                    'display_name' => '管理权限',
+                    'route' => '',
+                    'guard_name' => 'admin'
+                ],
+                [
+                    'id' => 6,
+                    'pid' => 5,
+                    'type' => PermissionTypes::View->value,
+                    'name' => 'system.permission.index',
+                    'icon' => 'material-symbols:shield-outline',
+                    'display_name' => '权限设置',
+                    'route' => 'admin.system.permission.index',
                     'guard_name' => 'admin'
                 ],
             ];

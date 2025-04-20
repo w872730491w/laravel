@@ -18,5 +18,19 @@
         "./vendor/laravel"
     ],
     "intelephense.files.maxSize": 10000000,
-    "php.version": "8.4.2"
+    "php.version": "8.4.2",
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "editor.quickSuggestions": {
+        "strings": "on"
+    },
+    "tailwindCSS.classFunctions": [
+        "tw",
+        "clsx",
+        "cn"
+    ],
+    "tailwindCSS.experimental.configFile": {
+        "resources/js/admin/css/admin.css": "resources/js/admin/**",
+    }
 }

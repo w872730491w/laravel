@@ -246,7 +246,7 @@ provide('app-sidebar', {
             <AppSidebar />
             <main class="bg-secondary flex h-full flex-1 flex-col overflow-hidden">
                 <AppTopbar />
-                <div class="flex-1 overflow-x-hidden overflow-y-auto">
+                <div class="flex-1 overflow-x-hidden overflow-y-auto h-full">
                     <slot />
                 </div>
             </main>
