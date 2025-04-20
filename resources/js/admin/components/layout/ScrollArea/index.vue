@@ -80,6 +80,21 @@ onMounted(() => {
     )
 })
 
+function scrollTo(scrollNumber: number) {
+    if (props.horizontal) {
+        scrollAreaRef.value?.el?.viewportElement?.scrollTo({
+            left: scrollNumber,
+            behavior: 'smooth',
+        })
+    }
+    else {
+        scrollAreaRef.value?.el?.viewportElement?.scrollTo({
+            top: scrollNumber,
+            behavior: 'smooth',
+        })
+    }
+}
+
 defineExpose({
     ref: scrollAreaRef,
     scrollTo,
@@ -87,41 +102,30 @@ defineExpose({
 </script>
 
 <template>
-    <div
-        ref="scrollContainerRef"
-        :class="
-            cn(
-                'relative flex overflow-hidden',
-                'after:pointer-events-none after:absolute after:z-10 after:from-transparent after:opacity-0 after:transition-opacity after:content-[\'\']',
-                'before:pointer-events-none before:absolute before:z-10 before:from-transparent before:opacity-0 before:transition-opacity before:content-[\'\']',
-                {
-                    'after:end-0 after:h-full after:w-12 after:bg-gradient-to-r after:to-[var(--mask-scroll-container-gradient-color)] after:rtl:bg-gradient-to-l':
-                        props.horizontal,
-                    'before:start-0 before:h-full before:w-12 before:bg-gradient-to-l before:to-[var(--mask-scroll-container-gradient-color)] before:rtl:bg-gradient-to-r':
-                        props.horizontal,
-                    'after:bottom-0 after:h-12 after:w-full after:bg-gradient-to-b after:to-[var(--mask-scroll-container-gradient-color)]':
-                        !props.horizontal,
-                    'before:h-12 before:w-full before:bg-gradient-to-t before:to-[var(--mask-scroll-container-gradient-color)]':
-                        !props.horizontal,
-                    'before:opacity-100!': props.mask && showMaskStart,
-                    'after:opacity-100!': props.mask && showMaskEnd,
-                },
-                props.class,
-            )
-        "
-    >
-        <ScrollArea
-            ref="scrollAreaRef"
-            :class="cn('relative z-0 flex-1', props.contentClass)"
-            :scrollbar="props.scrollbar"
-            :on-wheel="onWheel"
-        >
+    <div ref="scrollContainerRef" :class="cn(
+        'relative flex overflow-hidden',
+        'after:pointer-events-none after:absolute after:z-10 after:from-transparent after:opacity-0 after:transition-opacity after:content-[\'\']',
+        'before:pointer-events-none before:absolute before:z-10 before:from-transparent before:opacity-0 before:transition-opacity before:content-[\'\']',
+        {
+            'after:end-0 after:h-full after:w-12 after:bg-gradient-to-r after:to-[var(--mask-scroll-container-gradient-color)] after:rtl:bg-gradient-to-l':
+                props.horizontal,
+            'before:start-0 before:h-full before:w-12 before:bg-gradient-to-l before:to-[var(--mask-scroll-container-gradient-color)] before:rtl:bg-gradient-to-r':
+                props.horizontal,
+            'after:bottom-0 after:h-12 after:w-full after:bg-gradient-to-b after:to-[var(--mask-scroll-container-gradient-color)]':
+                !props.horizontal,
+            'before:h-12 before:w-full before:bg-gradient-to-t before:to-[var(--mask-scroll-container-gradient-color)]':
+                !props.horizontal,
+            'before:opacity-100!': props.mask && showMaskStart,
+            'after:opacity-100!': props.mask && showMaskEnd,
+        },
+        props.class,
+    )
+        ">
+        <ScrollArea ref="scrollAreaRef" :class="cn('relative z-0 flex-1', props.contentClass)"
+            :scrollbar="props.scrollbar" :on-wheel="onWheel">
             <slot />
-            <ScrollBar
-                v-if="props.horizontal"
-                orientation="horizontal"
-                :class="{ 'pointer-events-none opacity-0': !props.scrollbar }"
-            />
+            <ScrollBar v-if="props.horizontal" orientation="horizontal"
+                :class="{ 'pointer-events-none opacity-0': !props.scrollbar }" />
         </ScrollArea>
     </div>
 </template>

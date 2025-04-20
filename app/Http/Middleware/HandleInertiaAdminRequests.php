@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -37,11 +39,18 @@ class HandleInertiaAdminRequests extends Middleware
     public function share(Request $request): array
     {
         $user = function () use ($request) {
+            /**
+             * @var Admin
+             */
             $user = $request->user('admin');
             if ($user) {
+                $is_super_admin = $user->hasRole('super admin');
+                $permissions = $is_super_admin ? Permission::getPermissions([
+                    'guard_name' => 'admin'
+                ]) : $user->getAllPermissions();
                 return $user->only(['id', 'avatar', 'nickname']) + [
-                    'permissions' => $user->getAllPermissions(),
-                    'is_super_admin' => $user->hasRole('超管')
+                    'permissions' => $permissions,
+                    'is_super_admin' => $is_super_admin
                 ];
             }
             return null;

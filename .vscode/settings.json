@@ -12,6 +12,11 @@
         "**/vendor/**/vendor/**",
         "**/vendor/_laravel_ide/_request.php"
     ],
+    "intelephense.environment.includePaths": [
+        "./vendor/pestphp",
+        "./vendor/phpunit/phpunit",
+        "./vendor/laravel"
+    ],
     "intelephense.files.maxSize": 10000000,
-    "php.version": "8.4.2",
+    "php.version": "8.4.2"
 }

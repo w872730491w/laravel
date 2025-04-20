@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PermissionTypes;
 use App\Models\Admin;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Permission;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class AdminSeeder extends Seeder
@@ -14,17 +17,62 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = Admin::create([
-            'avatar' => '',
-            'nickname' => '管理员',
-            'username' => 'admin',
-            'password' => Hash::make('123456a'),
-        ]);
-        $role = Role::create([
-            'name' => 'super admin',
-            'display_name' => '超管',
-            'guard_name' => 'admin'
-        ]);
-        $admin->syncRoles($role);
+        DB::transaction(function () {
+            $admin = Admin::create([
+                'avatar' => '',
+                'nickname' => '管理员',
+                'username' => 'admin',
+                'password' => Hash::make('123456a'),
+            ]);
+
+            $role = Role::create([
+                'name' => 'super admin',
+                'display_name' => '超管',
+                'guard_name' => 'admin'
+            ]);
+
+            $admin->syncRoles($role);
+
+            $permissions = [
+                [
+                    'pid' => 0,
+                    'type' => PermissionTypes::View->value,
+                    'name' => 'system',
+                    'display_name' => '系统',
+                    'icon' => 'mynaui:desktop',
+                    'route' => '',
+                    'guard_name' => 'admin'
+                ],
+                [
+                    'pid' => 1,
+                    'type' => PermissionTypes::View->value,
+                    'name' => 'system.config',
+                    'icon' => 'uil:setting',
+                    'display_name' => '配置相关',
+                    'route' => '',
+                    'guard_name' => 'admin'
+                ],
+                [
+                    'pid' => 2,
+                    'type' => PermissionTypes::View->value,
+                    'name' => 'system.config.main',
+                    'icon' => 'tdesign:system-2',
+                    'display_name' => '系统配置',
+                    'route' => 'admin.system.config.main',
+                    'guard_name' => 'admin'
+                ],
+                [
+                    'pid' => 2,
+                    'type' => PermissionTypes::View->value,
+                    'name' => 'system.config.admin',
+                    'icon' => 'eos-icons:admin-outlined',
+                    'display_name' => '后台配置',
+                    'route' => 'admin.system.config.admin',
+                    'guard_name' => 'admin'
+                ],
+            ];
+
+            new Permission(['guard_name' => 'admin'])->insert($permissions);
+        });
     }
 }

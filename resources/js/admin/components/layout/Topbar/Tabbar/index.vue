@@ -7,7 +7,7 @@ import Sortable from 'sortablejs'
 const page = usePage()
 
 const { menus } = inject<{
-    menus: Record<string, any>[]
+    menus: Ref<Record<string, any>[]>
 }>('app-sidebar')!
 
 const list = ref<any[]>([])
@@ -18,7 +18,7 @@ const tabsRef = useTemplateRef('tabsRef')
 const tabRef = useTemplateRef<HTMLElement[]>('tabRef')
 
 watch(
-    () => page.props.ziggy.location,
+    () => activedTabId.value,
     (v) => {
         const tabId = v
         // 记录查找到的标签页
@@ -40,7 +40,7 @@ watch(
                 }
                 return null
             }
-            const route = findRoute(v, menus)
+            const route = findRoute(v, menus.value)
             if (!route) {
                 return
             }
@@ -61,8 +61,9 @@ watch(
         }
         const index = list.value.findIndex((item) => item.tabId === activedTabId.value)
         if (index !== -1) {
-            tabRef.value &&
-                tabsRef.value?.scrollTo({ left: tabRef.value[index].offsetLeft - tabsRef.value.ref?.$el.clientWidth * 0.4 })
+            nextTick(() => {
+                tabRef.value && tabsRef.value?.scrollTo(tabRef.value[index].offsetLeft - tabsRef.value.ref?.$el.clientWidth * 0.4)
+            })
         }
     },
     {
@@ -99,21 +100,12 @@ onMounted(() => {
 <template>
     <div class="tabbar relative flex h-(--tabbar-height) items-center bg-(--main-area-bg) transition-colors">
         <div class="relative h-full flex-1">
-            <ScrollArea ref="tabsRef" horizontal :scrollbar="false" mask class="absolute inset-x-0 bottom-0 whitespace-nowrap">
-                <TransitionGroup
-                    ref="tabContainerRef"
-                    :name="!isDragging ? 'tabbar' : undefined"
-                    tag="div"
-                    class="relative inline-block"
-                    :class="{ dragging: isDragging }"
-                >
-                    <div
-                        v-for="item in list"
-                        :key="item.tabId"
-                        ref="tabRef"
-                        class="tab group"
-                        :class="{ active: activedTabId === item.tabId }"
-                    >
+            <ScrollArea ref="tabsRef" horizontal :scrollbar="false" mask
+                class="absolute inset-x-0 bottom-0 whitespace-nowrap">
+                <TransitionGroup ref="tabContainerRef" :name="!isDragging ? 'tabbar' : undefined" tag="div"
+                    class="relative inline-block" :class="{ dragging: isDragging }">
+                    <div v-for="(item, index) in list" :key="item.tabId" ref="tabRef" :data-index="index"
+                        class="tab group" :class="{ active: activedTabId === item.tabId }">
                         <div class="pointer-events-auto size-full select-none">
                             <div class="tab-divider"></div>
                             <div class="tab-background"></div>
@@ -141,37 +133,47 @@ onMounted(() => {
         &:last-child {
             margin-inline-end: 0;
         }
+
         &:first-child {
             .tab-divider {
                 opacity: 0;
             }
         }
+
         &.active {
             z-index: 5;
+
             .tab-background {
                 background-color: var(--background);
+
                 &::before,
                 &::after {
                     background-color: var(--background);
                 }
             }
+
             .title {
                 color: var(--foreground);
             }
         }
+
         &:not(.active):hover {
             z-index: 3;
+
             .tab-background {
                 background-color: var(--border);
+
                 &::before,
                 &::after {
                     background-color: var(--border);
                 }
             }
+
             .title {
                 color: hsl(var(--accent-foreground) / 50%);
             }
         }
+
         .title {
             display: flex;
             flex: 1;
@@ -185,10 +187,12 @@ onMounted(() => {
             white-space: nowrap;
             mask-image: linear-gradient(to right, #000 calc(100% - 20px), transparent);
             transition: margin-inline-end 0.3s;
+
             &:has(+ .action-icon) {
                 margin-inline-end: 28px;
             }
         }
+
         .action-icon {
             position: absolute;
             inset-inline-end: 0.5rem;
@@ -210,6 +214,7 @@ onMounted(() => {
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 0.15s;
         }
+
         position: relative;
         display: inline-block;
         min-width: var(--tabbar-tab-min-width);
@@ -222,6 +227,7 @@ onMounted(() => {
         margin-inline: 6px -6px;
         line-height: calc(var(--tabbar-height) - 8px);
     }
+
     .tab-divider {
         position: absolute;
         inset-inline: -1px;
@@ -229,6 +235,7 @@ onMounted(() => {
         z-index: 0;
         height: 14px;
         transform: translateY(-50%);
+
         &::before {
             position: absolute;
             inset-inline-start: 1px;
@@ -244,6 +251,7 @@ onMounted(() => {
                 background-color 0.3s;
         }
     }
+
     .tab-background {
         position: absolute;
         top: 0;
@@ -256,6 +264,7 @@ onMounted(() => {
             opacity 0.3s,
             background-color 0.3s;
         border-radius: 10px 10px 0 0;
+
         &::before,
         &::after {
             position: absolute;
@@ -267,18 +276,22 @@ onMounted(() => {
             mask-size: 10px;
             transition: background-color 0.3s;
         }
+
         &::before {
             left: -10px;
             mask-image: url('/static/admin/images/tab-left.svg');
         }
+
         &::after {
             right: -10px;
             mask-image: url('/static/admin/images/tab-right.svg');
         }
     }
 }
+
 /* 标签栏动画 */
 .tabs {
+
     .tabbar-move,
     .tabbar-enter-active,
     .tabbar-leave-active {
@@ -292,6 +305,7 @@ onMounted(() => {
     }
 
     &.tabs-ontop {
+
         .tabbar-enter-from,
         .tabbar-leave-to {
             opacity: 0;

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{-- Inline style to set the HTML background color based on our theme in app.css --}}
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
-    @routes
+    @routes('admin')
     @vite(['resources/js/admin/main.ts'])
     @inertiaHead
 </head>

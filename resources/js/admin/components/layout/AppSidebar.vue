@@ -8,14 +8,26 @@ import ScrollArea from './ScrollArea/index.vue'
 
 const page = usePage()
 
-const { isCollapse, menus } = inject<{
+const { isCollapse, menus, allMenus, activeSidebarIndex } = inject<{
     isCollapse: Ref<boolean>
-    menus: Record<string, any>[]
+    menus: ComputedRef<Record<string, any>[]>
+    allMenus: ComputedRef<Record<string, any>[]>
+    activeSidebarIndex: Ref<number>
 }>('app-sidebar')!
 
 const toogleCollapse = () => {
     isCollapse.value = !isCollapse.value
 }
+
+const sidebarMenu = computed(() => {
+    return allMenus.value.map((v) => {
+        return {
+            id: v.id,
+            icon: v.icon,
+            title: v.title,
+        }
+    })
+})
 </script>
 
 <template>
@@ -30,30 +42,21 @@ const toogleCollapse = () => {
                 </Link>
                 <div class="flex-1 overflow-x-hidden overflow-y-auto overscroll-contain">
                     <div class="-mt-2 flex w-full flex-col overflow-hidden py-1 transition-all">
-                        <div class="menu-item active relative px-2 py-1 transition-all">
+                        <div
+                            v-for="(item, index) in sidebarMenu"
+                            :key="item.id"
+                            :class="{ active: index === activeSidebarIndex }"
+                            class="menu-item relative px-2 py-1 transition-all"
+                        >
                             <div
                                 class="group menu-item-container relative flex size-full h-full w-full cursor-pointer items-center justify-between gap-1 rounded-lg px-2! py-4 text-(--muted-foreground) transition-all hover:bg-(--accent) hover:text-(--accent-foreground)"
                             >
                                 <div class="inline-flex w-full flex-1 flex-col items-center justify-center gap-1">
-                                    <Icon name="uim:box" class="text-xl transition-transform group-hover:scale-120" />
+                                    <Icon :name="item.icon" class="text-xl transition-transform group-hover:scale-120" />
                                     <span
                                         class="transition-height transition-width w-full flex-1 truncate text-center text-sm transition-opacity"
                                     >
-                                        演示
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="menu-item relative px-2 py-1 transition-all">
-                            <div
-                                class="group menu-item-container relative flex size-full h-full w-full cursor-pointer items-center justify-between gap-1 rounded-lg px-2! py-4 text-(--muted-foreground) transition-all hover:bg-(--accent) hover:text-(--accent-foreground)"
-                            >
-                                <div class="inline-flex w-full flex-1 flex-col items-center justify-center gap-1">
-                                    <Icon name="uim:box" class="text-xl transition-transform group-hover:scale-120" />
-                                    <span
-                                        class="transition-height transition-width w-full flex-1 truncate text-center text-sm transition-opacity"
-                                    >
-                                        演示
+                                        {{ item.title }}
                                     </span>
                                 </div>
                             </div>
@@ -79,7 +82,7 @@ const toogleCollapse = () => {
                     :href="route('admin.home')"
                     class="w-inherit flex-center sidebar-logo h-[50px] cursor-pointer gap-2 px-3 text-inherit no-underline"
                 >
-                    <span class="block truncate font-bold">Fantastic-admin 专业版</span>
+                    <span class="block truncate font-bold">{{ page.props.name }}</span>
                 </Link>
                 <ScrollArea :scrollbar="false" mask class="flex-1">
                     <AppMenu :menus />
@@ -111,10 +114,12 @@ const toogleCollapse = () => {
     padding-block: 8px;
     color: var(--accent-foreground);
 }
+
 .menu-item.active .menu-item-container {
     background-color: var(--primary);
     color: var(--primary-foreground);
 }
+
 .main-sidebar-enter-active,
 .main-sidebar-leave-active {
     transition: 0.3s;
