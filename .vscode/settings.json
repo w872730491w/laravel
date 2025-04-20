@@ -1,0 +1,17 @@
+{
+    "intelephense.files.exclude": [
+        "**/.git/**",
+        "**/.svn/**",
+        "**/.hg/**",
+        "**/CVS/**",
+        "**/.DS_Store/**",
+        "**/node_modules/**",
+        "**/bower_components/**",
+        "**/vendor/**/{Tests,tests}/**",
+        "**/.history/**",
+        "**/vendor/**/vendor/**",
+        "**/vendor/_laravel_ide/_request.php"
+    ],
+    "intelephense.files.maxSize": 10000000,
+    "php.version": "8.4.2",
+}

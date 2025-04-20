@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('avatar')->comment('头像');
             $table->string('nickname')->comment('昵称');
-            $table->string('username')->comment('用户名');
+            $table->string('username')->unique()->comment('用户名');
             $table->string('password')->comment('密码');
             $table->timestamps();
+            $table->comment('管理员');
         });
     }
 

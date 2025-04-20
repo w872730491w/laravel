@@ -36,9 +36,20 @@ class HandleInertiaAdminRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = function () use ($request) {
+            $user = $request->user('admin');
+            if ($user) {
+                return $user->only(['id', 'avatar', 'nickname']) + [
+                    'permissions' => $user->getAllPermissions(),
+                    'is_super_admin' => $user->hasRole('超管')
+                ];
+            }
+            return null;
+        };
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'user' => $user,
             'ziggy' => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
