@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { usePage } from '@inertiajs/vue3'
 import type { GlobalThemeOverrides } from 'naive-ui'
+import { dateZhCN, zhCN } from 'naive-ui'
 import AppSidebar from './AppSidebar.vue'
 import AppTopbar from './Topbar/index.vue'
 
 const themeOverrides: GlobalThemeOverrides = {
     common: {
-        primaryColor: '#000000',
+        primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--primary'),
+        primaryColorHover: 'color-mix(in oklab, var(--primary) 90%, transparent)',
+        primaryColorPressed: 'color-mix(in oklab, var(--primary) 90%, transparent)',
+        borderRadius: 'var(--radius-md)',
     },
+    Button: {
+        textColorTextPrimary: 'var(--primary-foreground)'
+    }
 }
 
 const page = usePage()
@@ -241,15 +248,15 @@ provide('app-sidebar', {
 </script>
 
 <template>
-    <n-config-provider :theme-overrides="themeOverrides">
+    <NConfigProvider :theme-overrides="themeOverrides" :locale="zhCN" :date-locale="dateZhCN">
         <div class="flex h-svh w-svw">
             <AppSidebar />
             <main class="bg-secondary flex h-full flex-1 flex-col overflow-hidden">
                 <AppTopbar />
-                <div class="flex-1 overflow-x-hidden overflow-y-auto h-full">
+                <div class="h-full flex-1 overflow-x-hidden overflow-y-auto">
                     <slot />
                 </div>
             </main>
         </div>
-    </n-config-provider>
+    </NConfigProvider>
 </template>

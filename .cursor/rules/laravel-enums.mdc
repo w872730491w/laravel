@@ -1,0 +1,134 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Laravel枚举开发规范
+
+## 枚举基础
+- 使用PHP 8.1+原生枚举功能
+- 在`app/Enums`目录下组织枚举类
+- 为枚举提供有意义的名称和分类
+- 使用类型提示和返回类型增强类型安全
+
+## 枚举属性
+- 使用`app/Enums/Attributes/Description`注解为枚举添加描述信息 [Description.php](mdc:app/Enums/Attributes/Description.php)
+- 使用`app/Enums/Traits/GetsAttributes`特性获取枚举属性 [GetsAttributes.php](mdc:app/Enums/Traits/GetsAttributes.php)
+- 为每个枚举值提供清晰的描述
+
+## 最佳实践
+- 使用枚举替代"魔术常量"和状态字符串
+- 在模型中定义枚举相关字段的类型转换
+- 在迁移中对枚举相关列使用合适的数据类型
+- 在验证规则中使用枚举类型
+
+## 代码示例
+
+### 基本枚举定义
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Enums;
+
+use App\Enums\Attributes\Description;
+use App\Enums\Traits\GetsAttributes;
+
+enum UserStatus: string
+{
+    use GetsAttributes;
+    
+    #[Description('活跃用户')]
+    case ACTIVE = 'active';
+    
+    #[Description('已禁用用户')]
+    case DISABLED = 'disabled';
+    
+    #[Description('等待验证用户')]
+    case PENDING = 'pending';
+}
+```
+
+### 在模型中使用枚举
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use App\Enums\UserStatus;
+use Illuminate\Database\Eloquent\Model;
+
+final class User extends Model
+{
+    protected $fillable = [
+        'name',
+        'email',
+        'status',
+    ];
+    
+    protected $casts = [
+        'status' => UserStatus::class,
+    ];
+    
+    public function isActive(): bool
+    {
+        return $this->status === UserStatus::ACTIVE;
+    }
+}
+```
+
+### 在迁移中定义枚举字段
+```php
+<?php
+
+use App\Enums\UserStatus;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->enum('status', array_column(UserStatus::cases(), 'value'))
+                ->default(UserStatus::PENDING->value);
+            $table->timestamps();
+        });
+    }
+};
+```
+
+### 在控制器中使用枚举
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Admin;
+
+use App\Enums\UserStatus;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserStatusRequest;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+
+final class UserStatusController extends Controller
+{
+    public function update(UpdateUserStatusRequest $request, User $user): JsonResponse
+    {
+        $user->status = UserStatus::from($request->validated('status'));
+        $user->save();
+        
+        return response()->json([
+            'message' => '用户状态已更新为: ' . $user->status->description(),
+        ]);
+    }
+}
+```

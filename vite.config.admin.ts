@@ -7,6 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 export default defineConfig({
     build: {
@@ -26,6 +27,7 @@ export default defineConfig({
                 },
             },
         }),
+        vueJsx(),
         AutoImport({
             imports: [
                 'vue',
@@ -37,6 +39,9 @@ export default defineConfig({
             dts: './resources/js/admin/types/auto-imports.d.ts',
         }),
         Components({
+            dirs: ['resources/js/admin/components'],
+            deep: true,
+            directoryAsNamespace: true,
             resolvers: [NaiveUiResolver()],
             dts: './resources/js/admin/types/components.d.ts',
         }),

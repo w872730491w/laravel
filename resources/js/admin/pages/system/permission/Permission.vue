@@ -1,5 +1,6 @@
-<script setup lang="ts">
-import type { DataTableColumns } from 'naive-ui'
+<script setup lang="tsx">
+import { NSwitch, type DataTableColumns } from 'naive-ui'
+import PermissionForm from './form.vue'
 
 interface Permission {
     id: number
@@ -36,18 +37,40 @@ const columns: DataTableColumns<Permission> = [
     {
         key: 'status',
         title: '状态',
-        render: (row) => row.status_text,
+        width: 80,
+        align: 'center',
+        render: (row) => {
+            return <NSwitch v-model:value={row.status}></NSwitch>
+        },
     },
 ]
 
 const data = ref<Permission[]>(props.data)
 
 const rowKey = (row: Permission) => row.id
+
+const { open } = useForm()
 </script>
 
 <template>
     <div class="h-full p-4">
-        <div class="bg-background h-full w-full overflow-y-auto rounded p-4">
+        <div class="bg-background flex h-full w-full flex-col overflow-y-auto rounded p-4">
+            <NForm inline label-placement="left">
+                <NFormItem label="名称">
+                    <NInput placeholder="请输入名称" />
+                </NFormItem>
+                <NFormItem>
+                    <NButton type="primary">搜索</NButton>
+                </NFormItem>
+            </NForm>
+            <div class="my-4">
+                <NButton type="primary" @click="open('add')">
+                    <template #icon>
+                        <Icon name="ic:baseline-plus" />
+                    </template>
+                    添加权限
+                </NButton>
+            </div>
             <NDataTable
                 bordered
                 :single-line="false"
@@ -55,9 +78,10 @@ const rowKey = (row: Permission) => row.id
                 :data="data"
                 :row-key="rowKey"
                 flex-height
-                class="h-full"
+                class="flex-1"
                 default-expand-all
             />
         </div>
+        <PermissionForm />
     </div>
 </template>

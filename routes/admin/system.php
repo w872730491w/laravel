@@ -20,6 +20,7 @@ Route::prefix('system')->name('system.')->middleware('auth:admin')->group(functi
     Route::prefix('permission')->name('permission.')->group(function () {
 
         Route::get('index', [Permission::class, 'index'])->name('index');
+        Route::get('lazyData', [Permission::class, 'lazyData'])->name('lazyData');
 
     });
 
