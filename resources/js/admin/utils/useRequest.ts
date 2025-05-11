@@ -22,12 +22,12 @@ instance.interceptors.response.use(
     },
 )
 
-export const useApiGet = (
+export const useApiGet = <T = any>(
     url: ValidRouteName,
     params?: AxiosRequestConfig['params'],
     config?: Omit<AxiosRequestConfig, 'params'>,
 ) => {
-    return instance.get(route(url), {
+    return instance.get<T, T>(route(url), {
         ...config,
         params,
     })

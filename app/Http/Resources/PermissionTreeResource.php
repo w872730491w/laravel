@@ -16,9 +16,7 @@ class PermissionTreeResource extends JsonResource
     {
         $permissionsArray = PermissionResource::collection($this->resource)->toArray($request);
 
-        return [
-            'permissions' => $this->buildPermissionTree($permissionsArray)
-        ];
+        return $this->buildPermissionTree($permissionsArray);
     }
 
     /**

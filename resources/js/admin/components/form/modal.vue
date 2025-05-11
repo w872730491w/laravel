@@ -5,6 +5,12 @@ const emits = defineEmits<{
 }>()
 
 const { show } = useFormInject()
+
+if (import.meta.hot) {
+    if (show.value) {
+        emits('open')
+    }
+}
 </script>
 
 <template>

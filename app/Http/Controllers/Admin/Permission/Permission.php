@@ -14,14 +14,16 @@ class Permission extends Controller
         $data = ModelsPermission::where('guard_name', 'admin')->get();
 
         return inertia('system/permission/Permission', [
-            'data' => $data->toResourceCollection()->resource
+            'data' => new PermissionTreeResource($data)
         ]);
     }
 
     public function lazyData()
     {
         $data = ModelsPermission::where('guard_name', 'admin')->get();
-        
-        return $this->success(response: new PermissionTreeResource($data));
+
+        return $this->success(response: [
+            'permissions' => new PermissionTreeResource($data)
+        ]);
     }
 }

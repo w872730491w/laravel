@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->bigInteger('pid')->unsigned()->after('id')->comment('父级id');
             $table->tinyInteger('type')->after('pid')->comment('类型 0菜单 1权限');
             $table->string('display_name', 30)->after('name')->comment('显示名称');
-            $table->string('icon', 50)->after('display_name')->comment('图标');
+            $table->string('icon', length: 50)->after('display_name')->default('')->comment('图标');
             $table->string('route')->after('type')->default('')->comment('路由');
             $table->bigInteger('sort')->unsigned()->default(0)->after('route')->comment('排序');
             $table->tinyInteger('status')->unsigned()->default(1)->after('sort')->comment('状态 0禁用 1启用');
