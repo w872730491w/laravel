@@ -1,5 +1,6 @@
 import { usePage } from '@inertiajs/vue3'
-import axios, { type AxiosRequestConfig } from 'axios'
+import axios, { AxiosError, type AxiosRequestConfig } from 'axios'
+import { toast } from 'vue-sonner'
 import type { ValidRouteName } from 'ziggy-js'
 
 const instance = axios.create()
@@ -10,15 +11,30 @@ instance.interceptors.request.use((config) => {
 })
 
 instance.interceptors.response.use(
-    ({ data }) => {
+    ({ data, config }) => {
         if (data.code == 0) {
+            config.showMessage && data.message && toast.success(data.message, {
+                position: 'top-center'
+            })
             return data.response
+        }
+        if (data.code === 422) {
+            toast.error(data.message, {
+                position: 'top-center',
+            })
         }
         return Promise.reject(data)
     },
     (err) => {
-        console.log(err)
-        return err
+        return Promise.reject(
+            err instanceof AxiosError
+                ? err.response?.data
+                : {
+                      code: 1,
+                      message: err.message,
+                      data: null,
+                  },
+        )
     },
 )
 
@@ -32,3 +48,13 @@ export const useApiGet = <T = any>(
         params,
     })
 }
+
+export const useApiPost = <T = any>(
+    url: ValidRouteName,
+    data?: AxiosRequestConfig['data'],
+    config?: Omit<AxiosRequestConfig, 'data'>,
+) => {
+    return instance.post<T, T>(route(url), data, config)
+}
+
+export const useApi = instance

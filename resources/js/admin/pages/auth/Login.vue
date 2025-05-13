@@ -5,10 +5,12 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@admin
 import { Input } from '@admin/components/ui/input'
 import { Label } from '@admin/components/ui/label'
 import { ParticlesBg } from '@admin/components/ui/particles-bg'
+import { Toaster } from '@admin/components/ui/sonner'
 import { router, usePage } from '@inertiajs/vue3'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Motion } from 'motion-v'
 import { useForm } from 'vee-validate'
+
 import * as z from 'zod'
 
 defineOptions({
@@ -42,16 +44,24 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
+    <Toaster />
     <div
-        class="bg-secondary relative flex h-svh w-full flex-col items-center justify-center overflow-hidden rounded-lg border md:shadow-xl">
-        <Motion as="div" :initial="{ opacity: 0, y: 40, filter: 'blur(10px)' }" :in-view="{
-            opacity: 1,
-            y: 0,
-            filter: 'blur(0px)',
-        }" :transition="{
+        class="bg-secondary relative flex h-svh w-full flex-col items-center justify-center overflow-hidden rounded-lg border md:shadow-xl"
+    >
+        <Motion
+            as="div"
+            :initial="{ opacity: 0, y: 40, filter: 'blur(10px)' }"
+            :in-view="{
+                opacity: 1,
+                y: 0,
+                filter: 'blur(0px)',
+            }"
+            :transition="{
                 duration: 0.4,
                 ease: 'easeInOut',
-            }" class="bg-background z-20 w-[450px] space-y-8 rounded-(--radius) p-8 shadow-lg">
+            }"
+            class="bg-background z-20 w-[450px] space-y-8 rounded-(--radius) p-8 shadow-lg"
+        >
             <div class="text-center text-xl font-medium">
                 {{ props.name }}
             </div>
@@ -62,8 +72,12 @@ const onSubmit = handleSubmit((values) => {
                         <FormControl>
                             <Input v-bind="componentField" autocomplete="username" placeholder="请输入用户名" />
                         </FormControl>
-                        <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0"
-                            leave-active-class="transition-opacity" leave-to-class="opacity-0">
+                        <Transition
+                            enter-active-class="transition-opacity"
+                            enter-from-class="opacity-0"
+                            leave-active-class="transition-opacity"
+                            leave-to-class="opacity-0"
+                        >
                             <FormMessage class="absolute bottom-1 text-xs" />
                         </Transition>
                     </FormItem>
@@ -72,11 +86,19 @@ const onSubmit = handleSubmit((values) => {
                     <FormItem class="relative space-y-0 pb-6">
                         <FormLabel> 密码 </FormLabel>
                         <FormControl>
-                            <Input v-bind="componentField" type="password" autocomplete="current-password"
-                                placeholder="请输入密码" />
+                            <Input
+                                v-bind="componentField"
+                                type="password"
+                                autocomplete="current-password"
+                                placeholder="请输入密码"
+                            />
                         </FormControl>
-                        <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0"
-                            leave-active-class="transition-opacity" leave-to-class="opacity-0">
+                        <Transition
+                            enter-active-class="transition-opacity"
+                            enter-from-class="opacity-0"
+                            leave-active-class="transition-opacity"
+                            leave-to-class="opacity-0"
+                        >
                             <FormMessage class="absolute bottom-1 text-xs" />
                         </Transition>
                     </FormItem>

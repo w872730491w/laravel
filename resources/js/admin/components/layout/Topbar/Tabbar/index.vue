@@ -2,6 +2,7 @@
 import Icon from '@admin/components/Icon/index.vue'
 import ScrollArea from '@admin/components/layout/ScrollArea/index.vue'
 import { router, usePage } from '@inertiajs/vue3'
+import { useLocalStorage } from '@vueuse/core'
 import Sortable from 'sortablejs'
 
 const page = usePage()
@@ -10,12 +11,41 @@ const { menus } = inject<{
     menus: Ref<Record<string, any>[]>
 }>('app-sidebar')!
 
-const list = ref<any[]>([])
+const findRoute = (path: string, menus: any[]): any => {
+    for (const menu of menus) {
+        if (menu.path === path) {
+            return menu
+        }
+        if (menu.children?.length) {
+            const find = findRoute(path, menu.children)
+            if (find) {
+                return find
+            }
+        }
+    }
+    return null
+}
+
+const storage = useLocalStorage<any[]>('lanyun-tabbar', () => [])
+
+const list = ref<any[]>(
+    storage.value.filter((v) => {
+        const find = findRoute(v.tabId, menus.value)
+        return find && find.tabId === v.path
+    }),
+)
 const leaveIndex = ref(-1)
 const activedTabId = computed(() => page.props.ziggy.location)
 
 const tabsRef = useTemplateRef('tabsRef')
 const tabRef = useTemplateRef<HTMLElement[]>('tabRef')
+
+watch(
+    () => list.value.length,
+    () => {
+        storage.value = list.value
+    },
+)
 
 watch(
     activedTabId,
@@ -26,20 +56,6 @@ watch(
             return item.tabId === tabId
         })
         if (!findTab) {
-            const findRoute = (path: string, menus: any[]): any => {
-                for (const menu of menus) {
-                    if (menu.path === path) {
-                        return menu
-                    }
-                    if (menu.children?.length) {
-                        const find = findRoute(path, menu.children)
-                        if (find) {
-                            return find
-                        }
-                    }
-                }
-                return null
-            }
             const route = findRoute(v, menus.value)
             if (!route) {
                 return

@@ -4,6 +4,7 @@ import type { GlobalThemeOverrides } from 'naive-ui'
 import { dateZhCN, zhCN } from 'naive-ui'
 import AppSidebar from './AppSidebar.vue'
 import AppTopbar from './Topbar/index.vue'
+import { Toaster } from '@admin/components/ui/sonner'
 
 const themeOverrides: GlobalThemeOverrides = {
     common: {
@@ -14,6 +15,9 @@ const themeOverrides: GlobalThemeOverrides = {
     },
     Button: {
         textColorTextPrimary: 'var(--primary-foreground)'
+    },
+    Spin: {
+        opacitySpinning: 0
     }
 }
 
@@ -88,7 +92,8 @@ const allMenus = computed(() => {
     if (!page.props.user || !page.props.user.permissions) {
         return []
     }
-    return buildMenuTree(page.props.user.permissions as PermissionItem[])
+    const permissions = page.props.user.permissions as PermissionItem[];
+    return buildMenuTree(permissions.filter(v => v.type === 0))
 })
 
 const menus = computed(() => {
@@ -248,6 +253,7 @@ provide('app-sidebar', {
 </script>
 
 <template>
+    <Toaster />
     <NConfigProvider :theme-overrides="themeOverrides" :locale="zhCN" :date-locale="dateZhCN">
         <div class="flex h-svh w-svw">
             <AppSidebar />

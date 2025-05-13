@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NSwitch, type DataTableColumns } from 'naive-ui'
+import { NButton, NSpace, NSwitch, type DataTableColumns } from 'naive-ui'
 import PermissionForm from './form.vue'
 
 interface Permission {
@@ -16,10 +16,6 @@ interface Permission {
     created_at: string
     updated_at: string
 }
-
-const props = defineProps<{
-    data: Permission[]
-}>()
 
 const columns: DataTableColumns<Permission> = [
     {
@@ -40,48 +36,51 @@ const columns: DataTableColumns<Permission> = [
         width: 80,
         align: 'center',
         render: (row) => {
-            return <NSwitch v-model:value={row.status}></NSwitch>
+            return <NSwitch value={row.status}></NSwitch>
+        },
+    },
+    {
+        key: 'action',
+        title: '操作',
+        minWidth: 80,
+        align: 'center',
+        render: (row) => {
+            return (
+                <NSpace>
+                    <NButton
+                        size="small"
+                        onClick={() => {
+                            open('edit', { id: row.id })
+                        }}
+                    >
+                        修改
+                    </NButton>
+                </NSpace>
+            )
         },
     },
 ]
-
-const data = ref<Permission[]>(props.data)
-
-const rowKey = (row: Permission) => row.id
 
 const { open } = useForm()
 </script>
 
 <template>
     <div class="h-full p-4">
-        <div class="bg-background flex h-full w-full flex-col overflow-y-auto rounded p-4">
-            <NForm inline label-placement="left">
-                <NFormItem label="名称">
-                    <NInput placeholder="请输入名称" />
+        <List url="admin.system.permission.list" :columns="columns">
+            <template #search="{ search }">
+                <NFormItem label="显示名称">
+                    <NInput v-model:value="search.name" placeholder="搜索显示名称" />
                 </NFormItem>
-                <NFormItem>
-                    <NButton type="primary">搜索</NButton>
-                </NFormItem>
-            </NForm>
-            <div class="my-4">
+            </template>
+            <template #actions>
                 <NButton type="primary" @click="open('add')">
                     <template #icon>
                         <Icon name="ic:baseline-plus" />
                     </template>
                     添加权限
                 </NButton>
-            </div>
-            <NDataTable
-                bordered
-                :single-line="false"
-                :columns="columns"
-                :data="data"
-                :row-key="rowKey"
-                flex-height
-                class="flex-1"
-                default-expand-all
-            />
-        </div>
+            </template>
+        </List>
         <PermissionForm />
     </div>
 </template>

@@ -9,3 +9,14 @@ declare global {
 declare module '@inertiajs/vue3' {
     export function usePage(): Page<SharedData>
 }
+
+declare module 'axios' {
+    interface InternalAxiosRequestConfig {
+        showMessage?: boolean
+    }
+    interface AxiosRequestConfig {
+        showMessage?: boolean
+    }
+}
+
+export {}
