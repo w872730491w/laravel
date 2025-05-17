@@ -16,6 +16,8 @@ declare module 'vue' {
     DesignerComponentsListSearch: typeof import('./../components/designer/components/list/search/index.vue')['default']
     DesignerEditorButtonList: typeof import('./../components/designer/editor/button-list/index.vue')['default']
     DesignerEditorColumn: typeof import('./../components/designer/editor/column/index.vue')['default']
+    DesignerEditorColumnActions: typeof import('./../components/designer/editor/column-actions/index.vue')['default']
+    DesignerEditorColumncopy: typeof import('./../components/designer/editor/column copy/index.vue')['default']
     DesignerEditorRouteSelect: typeof import('./../components/designer/editor/route-select/index.vue')['default']
     Dropdown: typeof import('./../components/dropdown/index.vue')['default']
     FormModal: typeof import('./../components/form/modal.vue')['default']

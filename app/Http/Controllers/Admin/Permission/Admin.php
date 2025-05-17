@@ -20,7 +20,7 @@ class Admin extends Controller
     public function list(Request $request)
     {
         $post = $request->post();
-        $data = AdminModel::where('guard_name', 'admin')->paginate($post['limit'] ?? 10);
+        $data = AdminModel::paginate($post['limit'] ?? 10);
 
         return $this->response(response: [
             'total' => $data->total(),

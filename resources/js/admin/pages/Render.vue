@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PageSchema } from 'lanyunit-epic-designer';
+import type { PageSchema } from 'lanyunit-epic-designer'
 
 const pageSchema = ref<PageSchema>({
     schemas: [
@@ -20,8 +20,8 @@ const pageSchema = ref<PageSchema>({
                         api: 'admin.system.admin.list',
                         columns: [
                             {
-                                key: 'ID',
-                                title: 'id',
+                                key: 'id',
+                                title: 'ID',
                                 ellipsis: 1,
                                 align: 'left',
                                 titleAlign: 'left',
@@ -51,9 +51,21 @@ const pageSchema = ref<PageSchema>({
                                 titleAlign: 'left',
                                 allowExport: true,
                                 fixed: '',
-                                width: null,
+                                width: 80,
                                 showSearch: true,
                                 searchComponent: 'input',
+                            },
+                        ],
+                        actions: [
+                            {
+                                id: 'button_78muek',
+                                type: 'button',
+                                label: '按钮',
+                                show: 'console.log(row);\nreturn row.id === 1',
+                                componentProps: {
+                                    type: 'primary',
+                                    size: 'medium',
+                                },
                             },
                         ],
                         selection: false,
@@ -64,11 +76,13 @@ const pageSchema = ref<PageSchema>({
                             type: 'list-search',
                             children: [
                                 {
-                                    id: 'list-search-ID',
+                                    id: 'list-search-id',
                                     type: 'input',
-                                    field: 'ID',
+                                    field: 'id',
+                                    input: true,
                                     componentProps: {
-                                        placeholder: '搜索id',
+                                        bindModel: 'value',
+                                        placeholder: '搜索ID',
                                     },
                                     editConstraints: {
                                         copyable: false,
@@ -79,7 +93,9 @@ const pageSchema = ref<PageSchema>({
                                     id: 'list-search-nickname',
                                     type: 'input',
                                     field: 'nickname',
+                                    input: true,
                                     componentProps: {
+                                        bindModel: 'value',
                                         placeholder: '搜索昵称',
                                     },
                                     editConstraints: {
@@ -91,7 +107,9 @@ const pageSchema = ref<PageSchema>({
                                     id: 'list-search-username',
                                     type: 'input',
                                     field: 'username',
+                                    input: true,
                                     componentProps: {
+                                        bindModel: 'value',
                                         placeholder: '搜索用户名',
                                     },
                                     editConstraints: {
@@ -102,28 +120,27 @@ const pageSchema = ref<PageSchema>({
                             ],
                             componentProps: {},
                             show: true,
-                            id: 'list-search_lezkbe6s',
+                            id: 'list-search_ggsa8qz2',
                         },
                         {
                             type: 'list-actions',
                             children: [
                                 {
-                                    id: 'button_umgb2t',
+                                    id: 'button_ad4a0u',
                                     type: 'button',
                                     label: '添加',
                                     componentProps: {
                                         type: 'primary',
                                         size: 'medium',
                                     },
-                                    icon: 'line-md:plus',
                                 },
                             ],
                             componentProps: {},
                             show: true,
-                            id: 'list-actions_ht2pju42',
+                            id: 'list-actions_u1kp8667',
                         },
                     ],
-                    id: 'list_lwhmaidm',
+                    id: 'list_d43p1vf4',
                 },
             ],
         },
@@ -133,7 +150,7 @@ const pageSchema = ref<PageSchema>({
 </script>
 
 <template>
-    <div>
-        <DesignerBuilder :page-schema="pageSchema" />
+    <div class="h-full p-4">
+        <DesignerBuilder :page-schema="pageSchema" class="h-full" />
     </div>
 </template>

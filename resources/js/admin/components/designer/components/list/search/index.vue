@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { type ComponentSchema, type PageManager } from 'lanyunit-epic-designer'
+import type { FormInst } from 'naive-ui'
+import { provideKey } from '..'
 
 const props = withDefaults(
     defineProps<{
@@ -13,10 +15,26 @@ const children = computed(() => {
 })
 
 const pageManager = inject<PageManager>('pageManager')!
+
+const { search, getList } = inject(provideKey, {
+    search: ref({}),
+    getList: () => {},
+    loading: ref(false),
+    data: ref([]),
+    paginationProps: ref({}),
+})!
+
+const formRef = useTemplateRef<FormInst>('formRef')
+
+const handleSubmit = () => {
+    getList()
+}
+
+provide('formData', search.value)
 </script>
 
 <template>
-    <NForm inline label-placement="left" class="epic-list-search">
+    <NForm ref="formRef" :model="search" inline label-placement="left" class="epic-list-search" @submit.prevent="handleSubmit">
         <template v-if="pageManager.isDesignMode.value && !children.length">
             <div
                 class="flex h-10 w-full items-center justify-center rounded-(--radius) border border-(--border) text-sm text-gray-500"
@@ -33,7 +51,7 @@ const pageManager = inject<PageManager>('pageManager')!
             </slot>
             <NFormItem>
                 <NSpace>
-                    <NButton type="primary">搜索</NButton>
+                    <NButton attr-type="submit" type="primary">搜索</NButton>
                     <NButton>重置</NButton>
                 </NSpace>
             </NFormItem>

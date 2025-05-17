@@ -1,5 +1,13 @@
 import type { ComponentConfigModel } from 'lanyunit-epic-designer'
 
+export const provideKey = Symbol('epic-list') as InjectionKey<{
+    getList: () => void
+    loading: Ref<boolean>
+    data: Ref<Record<string, any>[]>
+    paginationProps: Ref<Record<string, any>>
+    search: Ref<Record<string, any>>
+}>
+
 export default <ComponentConfigModel>{
     component: async () => await import('./index.vue'),
     groupName: '列表',
@@ -10,6 +18,7 @@ export default <ComponentConfigModel>{
         componentProps: {
             api: null,
             columns: [],
+            actions: [],
             selection: false,
             selectionMultiple: false,
         },
@@ -87,6 +96,12 @@ export default <ComponentConfigModel>{
                             }
                         })
                 },
+            },
+            {
+                label: '操作栏',
+                type: 'TableColumnActionsEditor',
+                field: 'componentProps.actions',
+                layout: 'vertical',
             },
         ],
     },

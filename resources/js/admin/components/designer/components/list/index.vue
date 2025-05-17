@@ -1,7 +1,9 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import type { ComponentSchema, PageManager } from 'lanyunit-epic-designer'
+import { NButton, type PaginationProps } from 'naive-ui'
+import { provideKey } from './index'
 
-const props = withDefaults(
+const { componentSchema } = withDefaults(
     defineProps<{
         componentSchema: ComponentSchema
     }>(),
@@ -15,7 +17,7 @@ defineOptions({
 const pageManager = inject<PageManager>('pageManager')!
 
 const fieldColumns = computed(() => {
-    return props.componentSchema.componentProps.columns
+    return componentSchema.componentProps.columns
 })
 
 const columns = computed(() => {
@@ -39,17 +41,90 @@ const columns = computed(() => {
             allowExport: column.allowExport,
         }
     })
-    if (props.componentSchema.componentProps.selection) {
+    if (componentSchema.componentProps.selection) {
         columns.unshift({
             type: 'selection',
-            multiple: props.componentSchema.componentProps.selectionMultiple,
+            multiple: componentSchema.componentProps.selectionMultiple,
             align: 'center',
+        })
+    }
+    if (componentSchema.componentProps.actions?.length) {
+        columns.push({
+            key: 'actions',
+            title: '操作',
+            width: 100,
+            fixed: 'right',
+            render: (row: Record<string, any>) => {
+                return componentSchema.componentProps.actions
+                    .filter((v: any) => {
+                        if (v.show) {
+                            try {
+                                return new Function('row', v.show)(row)
+                            } catch (error) {
+                                console.error(error)
+                                return false
+                            }
+                        }
+                        return true
+                    })
+                    .map((action: ComponentSchema) => {
+                        const disabled = () => {
+                            if (!action.disable) {
+                                return false
+                            }
+                            try {
+                                return !!new Function('row', action.disable)(row)
+                            } catch (error) {
+                                console.error(error)
+                                return true
+                            }
+                        }
+                        return (
+                            <NButton {...action.componentProps} disabled={disabled()}>
+                                {action.label}
+                            </NButton>
+                        )
+                    })
+            },
         })
     }
     return columns
 })
 
+const loading = ref(false)
 const data = ref<Record<string, any>[]>([])
+const paginationProps = ref<PaginationProps>({
+    page: 1,
+    pageSize: 10,
+    itemCount: 0,
+    simple: false,
+    showSizePicker: true,
+    showQuickJumper: true,
+    prefix: ({ itemCount }) => `共 ${itemCount} 条`,
+    suffix: () => '页',
+})
+const search = ref<Record<string, any>>({
+    id: '1',
+})
+
+function getList() {
+    loading.value = true
+    const post = {
+        page: paginationProps.value.page,
+        limit: paginationProps.value.pageSize,
+        search: search.value,
+    }
+    useApiPost(componentSchema.componentProps.api, post)
+        .then(({ rows, total }) => {
+            data.value = rows
+            if (total) {
+                paginationProps.value.itemCount = total
+            }
+        })
+        .finally(() => {
+            loading.value = false
+        })
+}
 
 if (pageManager.isDesignMode.value) {
     watch(
@@ -73,31 +148,51 @@ if (pageManager.isDesignMode.value) {
     )
 }
 
+onMounted(() => {
+    if (pageManager.isDesignMode.value) {
+        return
+    }
+    getList()
+})
+
 const rowKey = (row: Record<string, any>) => {
     return row[fieldColumns.value[0].key]
 }
 
-defineExpose({})
+provide(provideKey, {
+    getList,
+    loading,
+    data,
+    paginationProps: paginationProps as Ref<Record<string, any>>,
+    search,
+})
+
+defineExpose({
+    getList,
+})
 </script>
 
 <template>
     <div class="bg-background flex h-full w-full flex-col overflow-y-auto rounded p-4">
         <slot name="edit-node">
-            <template v-for="subcomponentSchema in props.componentSchema.children" :key="subcomponentSchema.id">
+            <template v-for="subcomponentSchema in componentSchema.children" :key="subcomponentSchema.id">
                 <!-- EBuildr组件通过node插槽渲染 start -->
                 <slot name="node" :componentSchema="subcomponentSchema"></slot>
             </template>
         </slot>
         <NDataTable
-            size="small"
-            bordered
-            :single-line="false"
-            flex-height
-            class="flex-1"
-            default-expand-all
             :columns="columns"
             :data="data"
             :row-key="rowKey"
+            :loading="loading"
+            :single-line="false"
+            :pagination="paginationProps"
+            bordered
+            size="small"
+            flex-height
+            class="flex-1"
+            default-expand-all
         />
+        <slot></slot>
     </div>
 </template>
