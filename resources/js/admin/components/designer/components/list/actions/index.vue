@@ -1,34 +1,32 @@
 <script setup lang="ts">
-import type { ComponentSchema } from 'lanyunit-epic-designer'
+import { type ComponentSchema, type PageManager } from 'lanyunit-epic-designer'
 
-const props = withDefaults(
-    defineProps<{
-        componentSchema: ComponentSchema
-    }>(),
-    {},
-)
+const { componentSchema } = defineProps<{
+    componentSchema: ComponentSchema
+}>()
 
-const subcomponentSchema = {
-    componentProps: {
-        bordered: true,
-        size: 'medium',
-        type: 'default',
-    },
-    field: 'button_h5qt2n02',
-    input: false,
-    label: '按钮',
-    type: 'button',
-    id: 'button_h5qt2n02',
-}
+const children = computed(() => {
+    const children = componentSchema.children || []
+    return children
+})
+
+const pageManager = inject<PageManager>('pageManager')!
 </script>
 
 <template>
     <div class="my-4">
-        <!-- <slot name="edit-node">
-            <template v-for="subcomponentSchema in props.componentSchema.children" :key="subcomponentSchema.id">
-                <slot name="node" :componentSchema="subcomponentSchema" />
-            </template>
-        </slot> -->
-        <slot name="node" :componentSchema="subcomponentSchema" />
+        <template v-if="pageManager.isDesignMode.value && !children.length">
+            <div class="flex h-10 items-center justify-center rounded-(--radius) border border-(--border) text-sm text-gray-500">
+                操作区内容
+            </div>
+        </template>
+        <NSpace align="center">
+            <slot name="edit-node">
+                <template v-for="subcomponentSchema in children" :key="subcomponentSchema.id">
+                    <!-- EBuildr组件通过node插槽渲染 start -->
+                    <slot name="node" :componentSchema="subcomponentSchema" />
+                </template>
+            </slot>
+        </NSpace>
     </div>
 </template>

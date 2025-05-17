@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Permission\Admin;
 use App\Http\Controllers\Admin\Permission\Permission;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +21,13 @@ Route::prefix('system')->name('system.')->middleware('auth:admin')->group(functi
         Route::get('', [Permission::class, 'index'])->name('index');
         Route::post('list', [Permission::class, 'list'])->name('list');
         Route::get('lazyData', [Permission::class, 'lazyData'])->name('lazyData');
-        Route::post('', [Permission::class, 'create'])->name('create');
-        Route::post('', [Permission::class, 'edit'])->name('edit');
+        Route::post('create', [Permission::class, 'create'])->name('create');
+        Route::post('edit', [Permission::class, 'edit'])->name('edit');
         Route::get('detail', [Permission::class, 'detail'])->name('detail');
+    });
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('list', [Admin::class, 'index'])->name('list');
+        Route::post('list', [Admin::class, 'list'])->name('list');
     });
 });

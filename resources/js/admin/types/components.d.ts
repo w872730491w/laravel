@@ -10,9 +10,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     Avatar: typeof import('./../components/avatar/index.vue')['default']
     Designer: typeof import('./../components/designer/index.vue')['default']
+    DesignerBuilder: typeof import('./../components/designer/builder.vue')['default']
     DesignerComponentsList: typeof import('./../components/designer/components/list/index.vue')['default']
     DesignerComponentsListActions: typeof import('./../components/designer/components/list/actions/index.vue')['default']
     DesignerComponentsListSearch: typeof import('./../components/designer/components/list/search/index.vue')['default']
+    DesignerEditorButtonList: typeof import('./../components/designer/editor/button-list/index.vue')['default']
     DesignerEditorColumn: typeof import('./../components/designer/editor/column/index.vue')['default']
     DesignerEditorRouteSelect: typeof import('./../components/designer/editor/route-select/index.vue')['default']
     Dropdown: typeof import('./../components/dropdown/index.vue')['default']

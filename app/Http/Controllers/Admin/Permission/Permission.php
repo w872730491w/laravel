@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin\Permission;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PermissionTreeResource;
 use App\Models\Permission as ModelsPermission;
-use App\Http\Requests\Admin\System\PermissionRequest;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+use App\Http\Requests\Admin\System\PermissionEditRequest;
 use Spatie\Permission\Exceptions\PermissionAlreadyExists;
+use App\Http\Requests\Admin\System\PermissionCreateRequest;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
@@ -32,13 +33,13 @@ class Permission extends Controller
 
     /**
      * 添加
-     * @param PermissionRequest $request 
+     * @param PermissionCreateRequest $request 
      * @return JsonResponse 
      * @throws ValidationException 
      * @throws PermissionAlreadyExists 
      * @throws BindingResolutionException 
      */
-    public function create(PermissionRequest $request)
+    public function create(PermissionCreateRequest $request)
     {
         $post = $request->validated();
         $post['guard_name'] = 'admin';
@@ -50,18 +51,18 @@ class Permission extends Controller
 
     /**
      * 修改
-     * @param PermissionRequest $request 
+     * @param PermissionEditRequest $request 
      * @return JsonResponse 
      * @throws ValidationException 
      * @throws PermissionAlreadyExists 
      * @throws BindingResolutionException 
      */
-    public function edit(PermissionRequest $request)
+    public function edit(PermissionEditRequest $request)
     {
         $post = $request->validated();
         $permission = ModelsPermission::find($post['id']);
         if ($permission) {
-            $permission->save($post);
+            $permission->fill($post)->save();
         }
         return $this->response(message: '修改成功');
     }

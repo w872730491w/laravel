@@ -10,15 +10,16 @@ declare module 'ziggy-js' {
     "home": [],
     "admin.home": [],
     "admin.login": [],
-    "admin.": [],
     "admin.logout": [],
     "admin.system.config.main": [],
     "admin.system.config.admin": [],
     "admin.system.permission.index": [],
     "admin.system.permission.list": [],
     "admin.system.permission.lazyData": [],
+    "admin.system.permission.create": [],
     "admin.system.permission.edit": [],
     "admin.system.permission.detail": [],
+    "admin.system.admin.list": [],
     "storage.local": [
         {
             "name": "path",

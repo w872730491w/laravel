@@ -50,7 +50,7 @@ function buildMenuTree(permissions: PermissionItem[]) {
             id: permission.id,
             title: permission.display_name,
             icon: permission.icon,
-            path: permission.route ? route(permission.route) : undefined,
+            path: permission.route && route().has(permission.route) ? route(permission.route) : undefined,
             name: permission.name,
             children: [],
         }

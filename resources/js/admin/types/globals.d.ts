@@ -1,9 +1,12 @@
 import type { Page } from '@inertiajs/core'
-import type { route as routeFn } from 'ziggy-js'
 import type { SharedData } from './index'
 
 declare global {
-    const route: typeof routeFn
+    interface Window {
+        MonacoEnvironment: {
+            getWorker(moduleId: string, label: string): Worker
+        }
+    }
 }
 
 declare module '@inertiajs/vue3' {

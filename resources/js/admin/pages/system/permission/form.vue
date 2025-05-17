@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Ziggy } from '@admin/../ziggy.js'
 import { useApiGet } from '@admin/utils/useRequest'
 import type { OnUpdateValueImpl } from 'naive-ui/es/cascader/src/interface'
 
@@ -26,6 +27,11 @@ const onSelectParent: OnUpdateValueImpl = (v, e) => {
         form.value.name = (e.name as string) + '.'
     }
 }
+
+const routes = Object.keys(Ziggy.routes).map((route) => ({
+    label: route,
+    value: route,
+}))
 </script>
 
 <template>
@@ -62,6 +68,9 @@ const onSelectParent: OnUpdateValueImpl = (v, e) => {
         </NFormItem>
         <NFormItem :rule="{ required: true, message: '请输入标识' }" path="name" label="标识">
             <NInput v-model:value="form.name" placeholder="请输入标识" :maxlength="100" :input-props="{ spellcheck: false }" />
+        </NFormItem>
+        <NFormItem :rule="{ required: true, message: '请选择路由' }" path="route" label="路由">
+            <NSelect v-model:value="form.route" :options="routes" placeholder="请选择路由" />
         </NFormItem>
         <NFormItem v-if="form.type === 0" path="icon" label="图标">
             <NInput v-model:value="form.icon" placeholder="请输入图标" :maxlength="60" :input-props="{ spellcheck: false }" />

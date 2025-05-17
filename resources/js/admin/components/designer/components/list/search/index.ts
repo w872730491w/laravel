@@ -11,6 +11,8 @@ export default <ComponentConfigModel>{
         copyable: false,
         deleteable: false,
         childImmovable: true,
+        childDeleteable: false,
+        childCopyable: false,
     },
     config: {
         attribute: [],

@@ -30,8 +30,8 @@ importers:
         specifier: ^9.1.2
         version: 9.1.2
       lanyunit-epic-designer:
-        specifier: ^1.0.11
-        version: 1.0.11(ant-design-vue@4.2.6(vue@3.5.14(typescript@5.8.3)))(element-plus@2.9.10(vue@3.5.14(typescript@5.8.3)))(monaco-editor@0.52.2)(naive-ui@2.41.0(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3))
+        specifier: latest
+        version: 1.0.15(ant-design-vue@4.2.6(vue@3.5.14(typescript@5.8.3)))(element-plus@2.9.10(vue@3.5.14(typescript@5.8.3)))(monaco-editor@0.52.2)(naive-ui@2.41.0(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3))
       laravel-vite-plugin:
         specifier: ^1.2.0
         version: 1.2.0(vite@6.3.5(@types/node@22.15.18)(jiti@2.4.2)(lightningcss@1.30.1))
@@ -138,6 +138,12 @@ importers:
       unplugin-vue-components:
         specifier: ^28.5.0
         version: 28.5.0(@babel/parser@7.27.2)(vue@3.5.14(typescript@5.8.3))
+      vite-plugin-monaco-editor:
+        specifier: ^1.1.0
+        version: 1.1.0(monaco-editor@0.52.2)
+      vite-plugin-monaco-editor-esm:
+        specifier: ^2.0.2
+        version: 2.0.2(monaco-editor@0.52.2)
       vue-tsc:
         specifier: ^2.2.10
         version: 2.2.10(typescript@5.8.3)
@@ -1321,8 +1327,8 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
-  lanyunit-epic-designer@1.0.11:
-    resolution: {integrity: sha512-7sycQMEjRXUbYZgJBNewysYjTi6tVes1vnVA6O2Op+4rsyoG2CtXIdufmNCSM8rl8SXgViydHtRisPC/XAp8xw==}
+  lanyunit-epic-designer@1.0.15:
+    resolution: {integrity: sha512-qHYC8HrGQWrhzdHt8LKHNUDQWfbShMZN5v3lwpgsyeu2b4t7uTTcITo1ZgRbw7D0F0rizM7Ugv7me9l3LXEAJQ==}
     peerDependencies:
       ant-design-vue: '>=3.2.20'
       element-plus: '>=2.6.0'
@@ -1856,6 +1862,16 @@ packages:
 
   vite-plugin-full-reload@1.2.0:
     resolution: {integrity: sha512-kz18NW79x0IHbxRSHm0jttP4zoO9P9gXh+n6UTwlNKnviTTEpOlum6oS9SmecrTtSr+muHEn5TUuC75UovQzcA==}
+
+  vite-plugin-monaco-editor-esm@2.0.2:
+    resolution: {integrity: sha512-XVkOpL/r0rw1NpbO30vUwG4S0THkC9KB1vjjV8olGd49h4/EQsKl3DrxB6KRDwyZNC9mKiiZgk2L6njUYj3oKQ==}
+    peerDependencies:
+      monaco-editor: '>=0.33.0'
+
+  vite-plugin-monaco-editor@1.1.0:
+    resolution: {integrity: sha512-IvtUqZotrRoVqwT0PBBDIZPNraya3BxN/bfcNfnxZ5rkJiGcNtO5eAOWWSgT7zullIAEqQwxMU83yL9J5k7gww==}
+    peerDependencies:
+      monaco-editor: '>=0.33.0'
 
   vite@6.3.5:
     resolution: {integrity: sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==}
@@ -3144,7 +3160,7 @@ snapshots:
 
   json5@2.2.3: {}
 
-  lanyunit-epic-designer@1.0.11(ant-design-vue@4.2.6(vue@3.5.14(typescript@5.8.3)))(element-plus@2.9.10(vue@3.5.14(typescript@5.8.3)))(monaco-editor@0.52.2)(naive-ui@2.41.0(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3)):
+  lanyunit-epic-designer@1.0.15(ant-design-vue@4.2.6(vue@3.5.14(typescript@5.8.3)))(element-plus@2.9.10(vue@3.5.14(typescript@5.8.3)))(monaco-editor@0.52.2)(naive-ui@2.41.0(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3)):
     dependencies:
       ant-design-vue: 4.2.6(vue@3.5.14(typescript@5.8.3))
       element-plus: 2.9.10(vue@3.5.14(typescript@5.8.3))
@@ -3642,6 +3658,14 @@ snapshots:
     dependencies:
       picocolors: 1.1.1
       picomatch: 2.3.1
+
+  vite-plugin-monaco-editor-esm@2.0.2(monaco-editor@0.52.2):
+    dependencies:
+      monaco-editor: 0.52.2
+
+  vite-plugin-monaco-editor@1.1.0(monaco-editor@0.52.2):
+    dependencies:
+      monaco-editor: 0.52.2
 
   vite@6.3.5(@types/node@22.15.18)(jiti@2.4.2)(lightningcss@1.30.1):
     dependencies:

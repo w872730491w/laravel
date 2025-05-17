@@ -3,6 +3,22 @@ import { EDesigner, pluginManager, type ComponentConfigModel, type ComponentType
 import 'lanyunit-epic-designer/dist/lanyunit-epic-designer.css'
 import { setupNaiveUi } from 'lanyunit-epic-designer/dist/ui/naiveUi'
 
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
+import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+
+window.MonacoEnvironment = {
+    getWorker(_, label) {
+        if (label === 'json') {
+            return new jsonWorker()
+        }
+        if (label === 'typescript' || label === 'javascript') {
+            return new tsWorker()
+        }
+        return new editorWorker()
+    },
+}
+
 setupNaiveUi()
 
 const components = import.meta.glob<true, string, ComponentConfigModel>('./components/**/index.ts', {

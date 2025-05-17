@@ -48,9 +48,9 @@ defineExpose({
         "
     >
         <component
-            :is="subMenu ? 'div' : Link"
+            :is="subMenu || !item.path ? 'div' : Link"
             v-bind="
-                subMenu
+                subMenu || !item.path
                     ? {}
                     : {
                           href: item.path,

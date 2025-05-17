@@ -76,6 +76,8 @@ if (pageManager.isDesignMode.value) {
 const rowKey = (row: Record<string, any>) => {
     return row[fieldColumns.value[0].key]
 }
+
+defineExpose({})
 </script>
 
 <template>
