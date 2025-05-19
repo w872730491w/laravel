@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type ComponentSchema, type PageManager } from 'lanyunit-epic-designer'
+import { cloneDeep } from 'lodash-es'
 import type { FormInst } from 'naive-ui'
 import { provideKey } from '..'
 
@@ -24,17 +25,36 @@ const { search, getList } = inject(provideKey, {
     paginationProps: ref({}),
 })!
 
+const searchForm = reactive(search.value)
+
+let defaultSearch = cloneDeep(search.value)
+
 const formRef = useTemplateRef<FormInst>('formRef')
 
 const handleSubmit = () => {
     getList()
 }
 
-provide('formData', search.value)
+const resetSearch = () => {
+    for (const key in searchForm) {
+        searchForm[key] = defaultSearch[key] ?? null
+    }
+    getList()
+}
+
+provide('formData', searchForm)
 </script>
 
 <template>
-    <NForm ref="formRef" :model="search" inline label-placement="left" class="epic-list-search" @submit.prevent="handleSubmit">
+    <NForm
+        ref="formRef"
+        :model="search"
+        inline
+        label-placement="left"
+        class="epic-list-search flex-wrap"
+        :class="{ 'design-mode': pageManager.isDesignMode.value }"
+        @submit.prevent="handleSubmit"
+    >
         <template v-if="pageManager.isDesignMode.value && !children.length">
             <div
                 class="flex h-10 w-full items-center justify-center rounded-(--radius) border border-(--border) text-sm text-gray-500"
@@ -52,7 +72,7 @@ provide('formData', search.value)
             <NFormItem>
                 <NSpace>
                     <NButton attr-type="submit" type="primary">搜索</NButton>
-                    <NButton>重置</NButton>
+                    <NButton @click="resetSearch">重置</NButton>
                 </NSpace>
             </NFormItem>
         </template>
@@ -67,5 +87,8 @@ provide('formData', search.value)
     flex: 1;
     min-height: 58px;
     height: auto;
+}
+.epic-list-search.design-mode:deep(> .edit-draggable-widget) {
+    margin-right: 18px;
 }
 </style>

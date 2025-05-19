@@ -76,6 +76,10 @@ const componentOptions = ref<SelectMixedOption[]>([
         label: '输入框',
         value: 'input',
     },
+    {
+        label: '选择器',
+        value: 'select',
+    },
 ])
 
 const columnFormRef = useTemplateRef<FormInst>('columnFormRef')

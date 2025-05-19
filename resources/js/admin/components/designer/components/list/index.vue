@@ -1,14 +1,13 @@
 <script setup lang="tsx">
-import type { ComponentSchema, PageManager } from 'lanyunit-epic-designer'
+import { pluginManager, type ComponentSchema, type PageManager } from 'lanyunit-epic-designer'
 import { NButton, type PaginationProps } from 'naive-ui'
 import { provideKey } from './index'
+import { isNil, omitBy } from 'lodash-es'
+import Icon from '@admin/components/Icon/index.vue'
 
-const { componentSchema } = withDefaults(
-    defineProps<{
-        componentSchema: ComponentSchema
-    }>(),
-    {},
-)
+const { componentSchema } = defineProps<{
+    componentSchema: ComponentSchema
+}>()
 
 defineOptions({
     inheritAttrs: false,
@@ -57,7 +56,7 @@ const columns = computed(() => {
             render: (row: Record<string, any>) => {
                 return componentSchema.componentProps.actions
                     .filter((v: any) => {
-                        if (v.show) {
+                        if (!pageManager.isDesignMode.value && v.show) {
                             try {
                                 return new Function('row', v.show)(row)
                             } catch (error) {
@@ -81,7 +80,10 @@ const columns = computed(() => {
                         }
                         return (
                             <NButton {...action.componentProps} disabled={disabled()}>
-                                {action.label}
+                                {{
+                                    default: () => action.label,
+                                    icon: () => (action.icon ? <Icon name={action.icon} /> : null),
+                                }}
                             </NButton>
                         )
                     })
@@ -103,16 +105,16 @@ const paginationProps = ref<PaginationProps>({
     prefix: ({ itemCount }) => `共 ${itemCount} 条`,
     suffix: () => '页',
 })
-const search = ref<Record<string, any>>({
-    id: '1',
-})
+const search = ref<Record<string, any>>({})
 
 function getList() {
     loading.value = true
     const post = {
         page: paginationProps.value.page,
         limit: paginationProps.value.pageSize,
-        search: search.value,
+        search: omitBy(search.value, (value) => {
+            return isNil(value) || value === ''
+        }),
     }
     useApiPost(componentSchema.componentProps.api, post)
         .then(({ rows, total }) => {
@@ -189,8 +191,8 @@ defineExpose({
             :pagination="paginationProps"
             bordered
             size="small"
-            flex-height
-            class="flex-1"
+            :flex-height="!pageManager.isDesignMode.value"
+            :class="{ 'flex-1': !pageManager.isDesignMode.value }"
             default-expand-all
         />
         <slot></slot>
