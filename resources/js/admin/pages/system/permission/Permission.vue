@@ -62,11 +62,15 @@ const columns: DataTableColumns<Permission> = [
 ]
 
 const { open } = useForm()
+
+const rowKey = (row: Permission) => {
+    return row.id
+}
 </script>
 
 <template>
     <div class="h-full p-4">
-        <List url="admin.system.permission.list" :columns="columns">
+        <List url="admin.system.permission.list" :row-key="rowKey" :columns="columns">
             <template #search="{ search }">
                 <NFormItem label="显示名称">
                     <NInput v-model:value="search.name" placeholder="搜索显示名称" />

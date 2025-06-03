@@ -27,6 +27,7 @@ class PermissionCreateRequest extends FormRequest
         return [
             'display_name' => '显示名称',
             'icon' => '图标',
+            'route' => '路由',
             'pid' => '父级',
             'type' => '权限类型',
             'name' => '标识',
@@ -44,6 +45,7 @@ class PermissionCreateRequest extends FormRequest
                 'integer',
                 Rule::when(isset($this->pid) && $this->pid > 0, [Rule::exists(Permission::class, 'id')])
             ],
+            'route' => [Rule::requiredIf(isset($this->type) && $this->type == PermissionTypes::View->value), "max:200"],
             'type' => ['required', Rule::enum(PermissionTypes::class)],
             'name' => ['required', 'string', "max:100", Rule::unique(Permission::class)->where('guard_name', 'admin')->ignore($this->id)],
             'status' => ['required', 'boolean'],

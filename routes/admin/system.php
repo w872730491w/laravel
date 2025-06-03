@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Config\Design;
 use App\Http\Controllers\Admin\Permission\Admin;
 use App\Http\Controllers\Admin\Permission\Permission;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,15 @@ Route::prefix('system')->name('system.')->middleware('auth:admin')->group(functi
         Route::get('admin', function () {
             return inertia('system/config/Admin');
         })->name('admin');
+    });
+
+    Route::prefix('design')->name('design.')->group(function () {
+        Route::get('', [Design::class, 'index'])->name('index');
+        Route::post('list', [Design::class, 'list'])->name('list');
+        Route::get('lazyData', [Design::class, 'lazyData'])->name('lazyData');
+        Route::post('create', [Design::class, 'create'])->name('create');
+        Route::post('edit', [Design::class, 'edit'])->name('edit');
+        Route::get('detail', [Design::class, 'detail'])->name('detail');
     });
 
     Route::prefix('permission')->name('permission.')->group(function () {

@@ -60,4 +60,11 @@ class Permission extends ModelsPermission
             'status' => 'boolean',
         ];
     }
+
+    protected function icon(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => (string) $value
+        );
+    }
 }

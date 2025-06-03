@@ -6,3 +6,9 @@ interface Permission {
     display_name: string | null
     status: boolean
 }
+
+interface Design {
+    id: number
+    name: string
+    type: string
+}
